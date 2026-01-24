@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <a href="javascript:history.back()" class="text-decoration-none text-muted mb-4 d-inline-block">← Back</a>
+            <div class="card border-0 rounded-5 shadow-lg overflow-hidden">
+                {% if post.image_file %}
+                <img src="{{ post.image_file }}" class="img-fluid w-100" style="max-height: 500px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body p-5">
+                    <h1 class="display-4 fw-bold mb-4">{{ post.title }}</h1>
+                    <div class="mb-4">
+                        <span class="badge bg-light text-dark p-2">By {{ post.author }}</span>
+                        <span class="text-muted ms-3">{{ post.date_posted.strftime('%d %b %Y') }}</span>
+                    </div>
+                    <div class="post-content mb-5" style="font-size: 1.2rem; line-height: 1.8; white-space: pre-wrap;">
+                        {{ post.content }}
+                    </div>
+                    {% if session.get('user') == post.author %}
+                    <div class="border-top pt-4">
+                        <h5 class="mb-3 text-muted">Admin Actions:</h5>
+                        <a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn btn-warning rounded-pill px-4">Edit Post</a>
+                        <a href="{{ url_for('delete_post', post_id=post.id) }}" class="btn btn-danger rounded-pill px-4 ms-2" onclick="return confirm('Kya aap sach mein ise delete karna chahte hain?')">Delete Post</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

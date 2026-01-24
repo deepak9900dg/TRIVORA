@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold" style="color: #5d4037;">{{ category_name }} Hub</h1>
+    </div>
+
+    <div class="row g-4">
+        {% for post in posts %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 rounded-5 shadow-sm h-100 overflow-hidden" style="background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);">
+                {% if post.image_file %}
+                <img src="{{ url_for('static', filename='uploads/' + post.image_file) }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body p-4">
+                    <h3 class="fw-bold mb-3" style="color: #5d4037;">{{ post.title }}</h3>
+                    <p class="text-secondary small">{{ post.content[:100] }}...</p>
+
+                    <a href="{{ url_for('post_detail', post_id=post.id) }}" class="btn-aesthetic text-decoration-none d-inline-block mt-2" style="font-size: 0.8rem; padding: 8px 20px;">Read Full Post →</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

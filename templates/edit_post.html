@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card border-0 rounded-5 p-4 p-md-5 shadow-lg" style="background: rgba(255, 255, 255, 0.9);">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold">Edit <span style="color: #5c6bc0;">Post</span></h2>
+                </div>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase">Post Title</label>
+                        <input type="text" name="title" class="form-control rounded-4 p-3 border-0 bg-light" value="{{ post.title }}" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase">Category</label>
+                        <select name="category" class="form-select rounded-4 p-3 border-0 bg-light">
+                            <option value="Skills" {% if post.category == 'Skills' %}selected{% endif %}>Skills</option>
+                            <option value="Courses" {% if post.category == 'Courses' %}selected{% endif %}>Courses</option>
+                            <option value="Growth" {% if post.category == 'Growth' %}selected{% endif %}>Growth</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase">Update Image (Optional)</label>
+                        <input type="file" name="image" class="form-control rounded-4 p-2 border-0 bg-light" accept="image/*">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase">Content</label>
+                        <textarea name="content" class="form-control rounded-4 p-3 border-0 bg-light" rows="8" required>{{ post.content }}</textarea>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-bold">Save Changes</button>
+                        <a href="{{ url_for('post_detail', post_id=post.id) }}" class="btn btn-outline-secondary w-100 py-3 rounded-pill fw-bold">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

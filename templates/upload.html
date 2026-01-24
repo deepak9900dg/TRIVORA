@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card border-0 rounded-5 p-4 p-md-5 shadow-lg" style="background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold">Create New <span style="color: #ff8a65;">Post</span></h2>
+                </div>
+                <form action="/upload" method="POST" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase" style="color: #ff8a65;">Post Title</label>
+                        <input type="text" name="title" class="form-control rounded-4 p-3 shadow-sm border-0" style="background: #fff9f1;" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase" style="color: #ff8a65;">Category</label>
+                        <select name="category" class="form-select rounded-4 p-3 shadow-sm border-0" style="background: #fff9f1;" required>
+                            <option value="Skills">Skills</option>
+                            <option value="Courses">Courses</option>
+                            <option value="Growth">Growth</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase" style="color: #ff8a65;">Cover Image</label>
+                        <input type="file" name="image" class="form-control rounded-4 p-2 shadow-sm border-0" style="background: #fff9f1;" accept="image/*">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase" style="color: #ff8a65;">Content</label>
+                        <textarea name="content" class="form-control rounded-4 p-3 shadow-sm border-0" style="background: #fff9f1;" rows="6" required></textarea>
+                    </div>
+                    <button type="submit" class="btn w-100 py-3 shadow-sm border-0 text-white fw-bold" style="background: linear-gradient(90deg, #ff8a65, #ffb07c); border-radius: 50px;">Publish ✨</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-4 p-4">
+                <h2 class="text-center fw-bold mb-4" style="color: #6c5ce7;">Create Account</h2>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="fw-bold">Full Name / Username</label>
+                        <input type="text" name="username" class="form-control rounded-pill" placeholder="Aapka Naam" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold">Gmail / Email</label>
+                        <input type="email" name="email" class="form-control rounded-pill" placeholder="example@gmail.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold">Create Password</label>
+                        <input type="password" name="password" class="form-control rounded-pill" placeholder="********" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 shadow-sm">Sign Up Now</button>
+                </form>
+                <div class="text-center mt-3">
+                    <p>Already have an account? <a href="/login" class="text-decoration-none">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
