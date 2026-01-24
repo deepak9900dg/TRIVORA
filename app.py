@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, url_for, make_response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
@@ -162,6 +162,25 @@ def edit_post(post_id):
         db.session.commit()
         return redirect(url_for('post_detail', post_id=post.id))
     return render_template('edit_post.html', post=post)
+@app.route('/sitemap.xml')
+def sitemap():
+    """Google ke liye dynamic sitemap banayein"""
+    posts = Post.query.all()
+    pages = []
 
+    # Home page aur static pages jodein
+    pages.append(["https://trivora-blog.vercel.app/", datetime.now().strftime('%Y-%m-%d')])
+
+    # Har blog post ka link automatic jodein
+    for post in posts:
+        url = url_for('post_detail', post_id=post.id, _external=True)
+        pages.append([url, post.date_posted.strftime('%Y-%m-%d')])
+
+    # XML format mein response return karein
+    sitemap_xml = render_template('sitemap_template.xml', pages=pages)
+    response = make_response(sitemap_xml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
 if __name__ == '__main__':
     app.run()
+
