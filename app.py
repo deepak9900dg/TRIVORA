@@ -6,7 +6,8 @@ import cloudinary
 import cloudinary.uploader
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY', os.urandom(24))
+# Vercel Settings se Secret Key uthayega, nahi toh default use karega
+app.secret_key = os.environ.get('SECRET_KEY') or "super-secret-trivora-key"
 
 # File size limit 16MB
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
@@ -22,19 +23,22 @@ cloudinary.config(
     api_secret = os.environ.get('CLOUDINARY_API_SECRET')
 )
 
-# --- DATABASE CONFIGURATION ---
-# Is line ko update karke dekhein (GitHub par)
-database_url = os.environ.get('DATABASE_URL') or os.environ.get('NEON_DATABASE_URL') or os.environ.get('POSTGRES_URL')
+# --- DATABASE CONFIGURATION (Neon Postgres) ---
+# Aapke variables 'POSTGRES_URL' aur 'DATABASE_URL' dono check honge
+database_url = os.environ.get('POSTGRES_URL') or os.environ.get('DATABASE_URL')
 
-if not database_url:
-    # Agar koi key nahi mili toh temporary file
+if database_url:
+    # Postgres format fix for SQLAlchemy
+    if database_url.startswith("postgres://"):
+        database_url = database_url.replace("postgres://", "postgresql://", 1)
+else:
+    # Fail-safe: Local SQLite for testing
     database_url = 'sqlite:///' + os.path.join('/tmp', 'trivora.db')
-elif database_url.startswith("postgres://"):
-    database_url = database_url.replace("postgres://", "postgresql://", 1)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Database object initialize
+# Database object initialization (Sabse zaroori line)
 db = SQLAlchemy(app)
 
 # --- MODELS ---
@@ -53,15 +57,19 @@ class Post(db.Model):
     author = db.Column(db.String(50), nullable=False)
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
 
-# Database Tables Create
+# Tables automatically ban jayenge Neon database mein
 with app.app_context():
     db.create_all()
 
 # --- ROUTES ---
+
 @app.route('/')
 def home():
-    posts = Post.query.order_by(Post.date_posted.desc()).limit(6).all()
-    return render_template('home.html', posts=posts)
+    try:
+        posts = Post.query.order_by(Post.date_posted.desc()).limit(6).all()
+        return render_template('home.html', posts=posts)
+    except Exception as e:
+        return f"Database Error: {str(e)}"
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -109,10 +117,12 @@ def upload():
         category = request.form.get('category')
         content = request.form.get('content')
         file = request.files.get('image')
+
         image_url = None
         if file and file.filename != '' and allowed_file(file.filename):
             upload_result = cloudinary.uploader.upload(file, resource_type="auto")
             image_url = upload_result['secure_url']
+
         new_post = Post(title=title, category=category, content=content, image_file=image_url, author=session['user'])
         db.session.add(new_post)
         db.session.commit()
@@ -138,18 +148,20 @@ def edit_post(post_id):
     post = db.get_or_404(Post, post_id)
     if 'user' not in session or session['user'] != post.author:
         return "Unauthorized!", 403
+
     if request.method == 'POST':
         post.title = request.form.get('title')
         post.category = request.form.get('category')
         post.content = request.form.get('content')
+
         file = request.files.get('image')
         if file and file.filename != '' and allowed_file(file.filename):
             upload_result = cloudinary.uploader.upload(file, resource_type="auto")
             post.image_file = upload_result['secure_url']
+
         db.session.commit()
         return redirect(url_for('post_detail', post_id=post.id))
     return render_template('edit_post.html', post=post)
 
 if __name__ == '__main__':
     app.run()
-
