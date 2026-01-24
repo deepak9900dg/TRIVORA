@@ -8,38 +8,33 @@ import cloudinary.uploader
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', os.urandom(24))
 
-# File size limit 16MB aur formats support
+# File size limit 16MB
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp'}
-
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
 # --- CLOUDINARY CONFIGURATION ---
 cloudinary.config(
-cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME'),
-api_key = os.environ.get('CLOUDINARY_API_KEY'),
-api_secret = os.environ.get('CLOUDINARY_API_SECRET')
+    cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key = os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret = os.environ.get('CLOUDINARY_API_SECRET')
 )
 
 # --- DATABASE CONFIGURATION ---
-# --- DATABASE CONFIGURATION ---
-# Neon aur Vercel dono ke variables check karega
 database_url = os.environ.get('NEON_DATABASE_URL') or os.environ.get('POSTGRES_URL') or os.environ.get('DATABASE_URL')
 
-if database_url:
-    # SQLAlchemy ko 'postgresql://' chahiye hota hai
-    if database_url.startswith("postgres://"):
-        database_url = database_url.replace("postgres://", "postgresql://", 1)
+if database_url and database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
 else:
-    # Local testing ke liye temporary writable path
     database_url = 'sqlite:///' + os.path.join('/tmp', 'trivora.db')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app) # Ab 'db' object define ho gaya hai
+
+# Database object initialize
+db = SQLAlchemy(app)
 
 # --- MODELS ---
 class User(db.Model):
@@ -47,7 +42,6 @@ class User(db.Model):
     username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -58,18 +52,15 @@ class Post(db.Model):
     author = db.Column(db.String(50), nullable=False)
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
 
-
+# Database Tables Create
 with app.app_context():
     db.create_all()
 
-
 # --- ROUTES ---
-
 @app.route('/')
 def home():
     posts = Post.query.order_by(Post.date_posted.desc()).limit(6).all()
     return render_template('home.html', posts=posts)
-
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -86,7 +77,6 @@ def signup():
         return redirect(url_for('home'))
     return render_template('signup.html')
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -99,18 +89,15 @@ def login():
         return "Invalid Credentials!"
     return render_template('login.html')
 
-
 @app.route('/logout')
 def logout():
     session.pop('user', None)
     return redirect(url_for('home'))
 
-
 @app.route('/category/<name>')
 def category(name):
     posts = Post.query.filter_by(category=name).order_by(Post.date_posted.desc()).all()
     return render_template('category.html', category_name=name, posts=posts)
-
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -121,24 +108,20 @@ def upload():
         category = request.form.get('category')
         content = request.form.get('content')
         file = request.files.get('image')
-
         image_url = None
         if file and file.filename != '' and allowed_file(file.filename):
             upload_result = cloudinary.uploader.upload(file, resource_type="auto")
             image_url = upload_result['secure_url']
-
         new_post = Post(title=title, category=category, content=content, image_file=image_url, author=session['user'])
         db.session.add(new_post)
         db.session.commit()
         return redirect(url_for('category', name=category))
     return render_template('upload.html')
 
-
 @app.route('/post/<int:post_id>')
 def post_detail(post_id):
     post = db.get_or_404(Post, post_id)
     return render_template('post_detail.html', post=post)
-
 
 @app.route('/post/delete/<int:post_id>')
 def delete_post(post_id):
@@ -149,30 +132,22 @@ def delete_post(post_id):
         return redirect(url_for('home'))
     return "Unauthorized!", 403
 
-
 @app.route('/post/edit/<int:post_id>', methods=['GET', 'POST'])
 def edit_post(post_id):
     post = db.get_or_404(Post, post_id)
     if 'user' not in session or session['user'] != post.author:
         return "Unauthorized!", 403
-
     if request.method == 'POST':
         post.title = request.form.get('title')
         post.category = request.form.get('category')
         post.content = request.form.get('content')
-
         file = request.files.get('image')
         if file and file.filename != '' and allowed_file(file.filename):
             upload_result = cloudinary.uploader.upload(file, resource_type="auto")
             post.image_file = upload_result['secure_url']
-
         db.session.commit()
         return redirect(url_for('post_detail', post_id=post.id))
     return render_template('edit_post.html', post=post)
 
-
 if __name__ == '__main__':
-
-    app.run(debug=True)
-
-
+    app.run()
