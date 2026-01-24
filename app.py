@@ -7,10 +7,24 @@ import cloudinary.uploader
 
 app = Flask(__name__)
 from datetime import timedelta
-
+import re  # <-- Ye import hona zaroori hai
+from markupsafe import Markup
 app.secret_key = os.environ.get('SECRET_KEY')
 app.permanent_session_lifetime = timedelta(days=3650) # 30 din tak login rahega
 # Vercel Settings se Secret Key uthayega, nahi toh default use karega
+def make_clickable(text):
+    # Link dhoondne ka pattern
+    url_pattern = re.compile(r'(https?://[^\s]+)')
+    
+    # Link ko <a> tag mein badalna (target="_blank" ke saath)
+    clickable_text = url_pattern.sub(
+        r'<a href="\1" target="_blank" style="color: #e9967a; text-decoration: underline;">\1</a>', 
+        text
+    )
+    return Markup(clickable_text)
+
+# 2. Is function ko Flask/Jinja mein register karna
+app.jinja_env.filters['make_clickable'] = make_clickable
 app.secret_key = os.environ.get('SECRET_KEY') or "super-secret-trivora-key"
 
 # File size limit 16MB
@@ -188,5 +202,6 @@ def sitemap():
     return response
 if __name__ == '__main__':
     app.run()
+
 
 
