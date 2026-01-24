@@ -25,17 +25,21 @@ api_secret = os.environ.get('CLOUDINARY_API_SECRET')
 )
 
 # --- DATABASE CONFIGURATION ---
-# Yeh code Neon database ko detect karega
+# --- DATABASE CONFIGURATION ---
+# Neon aur Vercel dono ke variables check karega
 database_url = os.environ.get('NEON_DATABASE_URL') or os.environ.get('POSTGRES_URL') or os.environ.get('DATABASE_URL')
 
-if database_url and database_url.startswith("postgres://"):
-    database_url = database_url.replace("postgres://", "postgresql://", 1)
+if database_url:
+    # SQLAlchemy ko 'postgresql://' chahiye hota hai
+    if database_url.startswith("postgres://"):
+        database_url = database_url.replace("postgres://", "postgresql://", 1)
 else:
-    # Agar keys nahi milti toh temporary SQLite (testing ke liye)
+    # Local testing ke liye temporary writable path
     database_url = 'sqlite:///' + os.path.join('/tmp', 'trivora.db')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
-
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app) # Ab 'db' object define ho gaya hai
 
 # --- MODELS ---
 class User(db.Model):
@@ -170,4 +174,5 @@ def edit_post(post_id):
 if __name__ == '__main__':
 
     app.run(debug=True)
+
 
