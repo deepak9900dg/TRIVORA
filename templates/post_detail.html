@@ -15,7 +15,7 @@
                         <span class="text-muted ms-3">{{ post.date_posted.strftime('%d %b %Y') }}</span>
                     </div>
                     <div class="post-content mb-5" style="font-size: 1.2rem; line-height: 1.8; white-space: pre-wrap;">
-                        {{ post.content }}
+                        {{ post.content | make_clickable | safe }}
                     </div>
                     {% if session.get('user') == post.author %}
                     <div class="border-top pt-4">
@@ -29,4 +29,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
