@@ -23,15 +23,16 @@ cloudinary.config(
 )
 
 # --- DATABASE CONFIGURATION ---
-database_url = os.environ.get('NEON_DATABASE_URL') or os.environ.get('POSTGRES_URL') or os.environ.get('DATABASE_URL')
+# Is line ko update karke dekhein (GitHub par)
+database_url = os.environ.get('DATABASE_URL') or os.environ.get('NEON_DATABASE_URL') or os.environ.get('POSTGRES_URL')
 
-if database_url and database_url.startswith("postgres://"):
-    database_url = database_url.replace("postgres://", "postgresql://", 1)
-else:
+if not database_url:
+    # Agar koi key nahi mili toh temporary file
     database_url = 'sqlite:///' + os.path.join('/tmp', 'trivora.db')
+elif database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Database object initialize
 db = SQLAlchemy(app)
@@ -151,3 +152,4 @@ def edit_post(post_id):
 
 if __name__ == '__main__':
     app.run()
+
