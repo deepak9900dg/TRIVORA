@@ -6,6 +6,10 @@ import cloudinary
 import cloudinary.uploader
 
 app = Flask(__name__)
+from datetime import timedelta
+
+app.secret_key = os.environ.get('SECRET_KEY')
+app.permanent_session_lifetime = timedelta(days=3650) # 30 din tak login rahega
 # Vercel Settings se Secret Key uthayega, nahi toh default use karega
 app.secret_key = os.environ.get('SECRET_KEY') or "super-secret-trivora-key"
 
@@ -93,6 +97,7 @@ def login():
         password = request.form.get('password')
         user = User.query.filter_by(email=email, password=password).first()
         if user:
+            session.permanent = True
             session['user'] = user.username
             return redirect(url_for('home'))
         return "Invalid Credentials!"
@@ -183,4 +188,5 @@ def sitemap():
     return response
 if __name__ == '__main__':
     app.run()
+
 
