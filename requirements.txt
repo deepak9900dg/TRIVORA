@@ -4,3 +4,4 @@ cloudinary
 werkzeug
 gunicorn
 psycopg2-binary
+bleach
