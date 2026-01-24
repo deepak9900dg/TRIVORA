@@ -25,9 +25,10 @@ api_secret = os.environ.get('CLOUDINARY_API_SECRET')
 )
 
 # --- DATABASE CONFIGURATION ---
-database_url = os.environ.get('DATABASE_URL', 'sqlite:///trivora.db')
-if database_url.startswith("postgres://"):
-    database_url = database_url.replace("postgres://", "postgresql://", 1)
+if os.environ.get('DATABASE_URL'):
+    database_url = os.environ.get('DATABASE_URL').replace("postgres://", "postgresql://", 1)
+else:
+    database_url = 'sqlite:///' + os.path.join('/tmp', 'trivora.db')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -165,4 +166,5 @@ def edit_post(post_id):
 
 
 if __name__ == '__main__':
+
     app.run(debug=True)
