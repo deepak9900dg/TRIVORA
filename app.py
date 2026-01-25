@@ -200,8 +200,17 @@ def sitemap():
     response = make_response(sitemap_xml)
     response.headers["Content-Type"] = "application/xml"
     return response
+    
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
+@app.route('/privacy-policy')
+def privacy():
+    return render_template('privacy.html')
 if __name__ == '__main__':
     app.run()
+
 
 
 
