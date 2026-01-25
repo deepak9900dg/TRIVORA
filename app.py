@@ -183,19 +183,22 @@ def edit_post(post_id):
     return render_template('edit_post.html', post=post)
 @app.route('/sitemap.xml')
 def sitemap():
-    """Google ke liye dynamic sitemap banayein"""
-    posts = Post.query.all()
     pages = []
-
-    # Home page aur static pages jodein
+    # Home page link
     pages.append(["https://trivora-blog.vercel.app/", datetime.now().strftime('%Y-%m-%d')])
 
-    # Har blog post ka link automatic jodein
+    # 1. Contact Us page manual add karein
+    pages.append([url_for('contact', _external=True), datetime.now().strftime('%Y-%m-%d')])
+
+    # 2. Privacy Policy page manual add karein
+    pages.append([url_for('privacy', _external=True), datetime.now().strftime('%Y-%m-%d')])
+
+    # Har blog post ka link automatic jodein (jaisa pehle tha)
+    posts = Post.query.all()
     for post in posts:
         url = url_for('post_detail', post_id=post.id, _external=True)
         pages.append([url, post.date_posted.strftime('%Y-%m-%d')])
 
-    # XML format mein response return karein
     sitemap_xml = render_template('sitemap_template.xml', pages=pages)
     response = make_response(sitemap_xml)
     response.headers["Content-Type"] = "application/xml"
@@ -210,6 +213,7 @@ def privacy():
     return render_template('privacy.html')
 if __name__ == '__main__':
     app.run()
+
 
 
 
