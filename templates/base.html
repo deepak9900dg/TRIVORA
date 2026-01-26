@@ -21,9 +21,9 @@
         :root { --bg-color: #f2ede4; --nav-bg: #fffaf0; --accent: #ff8a65; }
         body { background-color: var(--bg-color); font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
 
-        /* Mobile View Buttons Fix */
-        .navbar { background-color: var(--nav-bg) !important; padding: 10px 0; }
-        .nav-custom-container { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+        /* NAVBAR FIX: Ab mobile par bhi text aur buttons hamesha dikhenge */
+        .navbar { background-color: var(--nav-bg) !important; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .nav-custom-container { display: flex; align-items: center; justify-content: space-between; width: 100%; flex-wrap: nowrap; }
         
         .navbar-nav-scrollable {
             display: flex !important;
@@ -33,16 +33,18 @@
         }
 
         .nav-link { 
-            font-size: 0.85rem; 
-            padding: 5px 8px !important; 
+            font-size: 0.8rem; 
+            padding: 4px 6px !important; 
             font-weight: 600; 
             color: #2d3436 !important;
+            white-space: nowrap;
         }
 
-        /* Responsive Logo for small screens */
-        @media (max-width: 576px) {
-            .brand-text-img { display: none; } /* Mobile par sirf logo dikhega space bachane ke liye */
-            .nav-link { font-size: 0.75rem; padding: 5px 5px !important; }
+        /* Phone par size auto-adjust hoga */
+        @media (max-width: 480px) {
+            .brand-text-img { height: 16px !important; margin-left: 4px !important; }
+            .brand-logo-img { height: 30px !important; }
+            .nav-link { font-size: 0.72rem; padding: 3px 4px !important; }
         }
 
         /* Dark Mode */
@@ -50,7 +52,7 @@
         body.dark-mode .navbar { background-color: #1a1a1a !important; }
         body.dark-mode .nav-link { color: #eee !important; }
 
-        /* Card Image Aspect Ratio Fix */
+        /* Category Image Aspect Ratio Fix */
         .card-img-top { height: 200px; object-fit: cover; width: 100%; }
     </style>
 </head>
@@ -59,8 +61,8 @@
 <nav class="navbar sticky-top">
     <div class="container nav-custom-container">
         <a class="navbar-brand d-flex align-items-center m-0" href="{{ url_for('home') }}">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="Trivora Symbol" style="height: 35px;">
-            <img src="{{ url_for('static', filename='text.png') }}" class="brand-text-img" alt="TRIVORA" style="height: 20px; margin-left: 8px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" class="brand-logo-img" alt="Trivora Symbol" style="height: 38px;">
+            <img src="{{ url_for('static', filename='text.png') }}" class="brand-text-img" alt="TRIVORA" style="height: 22px; margin-left: 8px;">
         </a>
 
         <div class="navbar-nav-scrollable">
@@ -71,7 +73,7 @@
             {% else %}
                 <a class="nav-link" href="{{ url_for('login') }}">Login</a>
             {% endif %}
-            <button id="darkModeToggle" class="btn p-0 ms-2" style="font-size: 1.2rem; background:none; border:none;">🌙</button>
+            <button id="darkModeToggle" class="btn p-0 ms-1" style="font-size: 1.1rem; background:none; border:none;">🌙</button>
         </div>
     </div>
 </nav>
