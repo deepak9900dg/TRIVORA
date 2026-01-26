@@ -6,7 +6,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-1G407RQJTJ');
     </script>
     <meta name="p:domain_verify" content="c38f713f4ed26a61ccbb22df3b8dfb96"/>
@@ -30,231 +29,120 @@
     }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         :root {
-            --primary-bg: #fdfaf5; /* Lighter creamy white */
-            --secondary-bg: #fffbf5; /* Even lighter */
-            --text-dark: #3a3a3a;
-            --text-light: #6a6a6a;
-            --accent-color: #ff8a65; /* Existing accent */
-            --accent-hover: #e57373;
-            --navbar-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            --card-shadow: 0 6px 20px rgba(0,0,0,0.08);
-            --border-radius: 12px;
+            --bg-color: #f2ede4;
+            --nav-bg: #fffaf0;
+            --card-bg: #ffffff;
+            --accent: #ff8a65;
+            --text-main: #2d3436;
         }
 
         body {
-            background-color: var(--primary-bg);
-            font-family: 'Poppins', sans-serif;
-            color: var(--text-dark);
-            transition: background-color 0.5s ease, color 0.5s ease;
-            line-height: 1.7;
-            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+            background-color: var(--bg-color);
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.4s ease;
+            overflow-x: hidden;
         }
 
-        /* Navbar */
+        /* Fancy Animated Navbar */
         .navbar {
-            background-color: var(--secondary-bg) !important;
-            box-shadow: var(--navbar-shadow);
+            background-color: var(--nav-bg) !important;
             padding: 15px 0;
-            transition: background-color 0.5s ease;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: 0.3s;
         }
-        .navbar-brand {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            color: var(--text-dark) !important;
-            font-size: 1.8rem;
-            letter-spacing: 0.5px;
-        }
-        .navbar-brand img { height: 45px; transition: transform 0.3s ease; }
-        .navbar-brand img:hover { transform: scale(1.05); }
+
+        .navbar-brand img { transition: transform 0.3s ease; }
+        .navbar-brand:hover img { transform: rotate(-5deg) scale(1.05); }
+
+        /* Navigation Links Animation */
         .nav-link {
-            color: var(--text-dark) !important;
             font-weight: 600;
-            padding: 8px 15px;
+            color: var(--text-main) !important;
+            margin: 0 10px;
             position: relative;
-            transition: color 0.3s ease, transform 0.3s ease;
         }
-        .nav-link:hover {
-            color: var(--accent-color) !important;
-            transform: translateY(-2px);
-        }
-        .nav-link::after { /* Underline effect on hover */
+        .nav-link::after {
             content: '';
             position: absolute;
             width: 0;
             height: 2px;
-            background-color: var(--accent-color);
+            background: var(--accent);
             bottom: 0;
             left: 50%;
+            transition: 0.3s;
             transform: translateX(-50%);
-            transition: width 0.3s ease-in-out;
         }
-        .nav-link:hover::after { width: 70%; }
+        .nav-link:hover::after { width: 100%; }
 
-        /* Hero Section Styling (Master Your Potential) */
-        .hero-section {
-            padding: 100px 0;
-            text-align: center;
-            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
-            animation: fadeIn 1s ease-out;
-        }
-        .hero-section h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.8rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 20px;
-            animation: slideInUp 0.8s ease-out;
-        }
-        .hero-section p {
-            font-size: 1.3rem;
-            color: var(--text-light);
-            max-width: 700px;
-            margin: 0 auto 40px auto;
-            animation: slideInUp 1s ease-out 0.2s forwards;
-            opacity: 0;
+        /* Full Page Post Fix */
+        .full-page-post {
+            width: 100vw !important;
+            margin-left: calc(-50vw + 50%);
+            padding: 0 !important;
+            animation: fadeIn 0.8s ease;
         }
 
-        /* Card Styling */
+        /* Glassmorphism Card Style */
         .card {
             border: none;
-            border-radius: var(--border-radius);
-            box-shadow: var(--card-shadow);
-            background-color: var(--secondary-bg);
-            margin-bottom: 30px;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            animation: fadeIn 0.8s ease-out;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.05);
+            transition: 0.4s;
+            overflow: hidden;
         }
         .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-        }
-        .card-title {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            color: var(--text-dark);
-            font-size: 1.6rem;
-        }
-        .card-text {
-            color: var(--text-light);
-            font-size: 0.95rem;
+            transform: translateY(-10px);
+            box-shadow: 0 15px 45px rgba(255,138,101,0.15);
         }
 
-        /* Buttons */
+        /* Aesthetic Buttons */
         .btn-aesthetic {
-            background-color: var(--accent-color);
-            color: white;
+            background: linear-gradient(45deg, #ff8a65, #e57373);
             border: none;
+            color: white;
             padding: 10px 25px;
-            border-radius: 8px;
-            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 50px;
             font-weight: 600;
-            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(255,138,101,0.3);
+            transition: 0.3s;
         }
         .btn-aesthetic:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255,138,101,0.5);
         }
 
-        /* Dark Mode Toggle */
-        #darkModeToggle {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-dark);
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-        #darkModeToggle:hover { transform: scale(1.1); }
-
-        /* Dark Mode */
+        /* Dark Mode Aesthetic */
         body.dark-mode {
-            background-color: #1a1a1a;
-            color: #f5f5f5;
+            background-color: #121212;
+            color: #ffffff;
         }
         body.dark-mode .navbar {
-            background-color: #2a2a2a !important;
-            box-shadow: 0 4px 15px rgba(255,255,255,0.08);
+            background-color: #1a1a1a !important;
+            border-bottom: 1px solid #333;
         }
-        body.dark-mode .navbar-brand, body.dark-mode .nav-link, body.dark-mode #darkModeToggle {
-            color: #f5f5f5 !important;
-        }
-        body.dark-mode .nav-link:hover {
-            color: var(--accent-color) !important;
-        }
-        body.dark-mode .card {
-            background-color: #2a2a2a;
-            box-shadow: 0 6px 20px rgba(255,255,255,0.08);
-            border: 1px solid #3a3a3a;
-        }
-        body.dark-mode .card-title, body.dark-mode .hero-section h1 {
-            color: #f5f5f5;
-        }
-        body.dark-mode .hero-section p, body.dark-mode .card-text {
-            color: #cccccc;
-        }
-        body.dark-mode .footer-link {
-            color: #ccc !important;
-        }
+        body.dark-mode .nav-link { color: #eee !important; }
+        body.dark-mode .card { background: rgba(30, 30, 30, 0.8); border: 1px solid #333; }
 
-        /* Footer */
-        footer {
-            background: linear-gradient(0deg, var(--secondary-bg) 0%, var(--primary-bg) 100%);
-            border-top: 1px solid rgba(0,0,0,0.05);
-            padding: 30px 0;
-            transition: background-color 0.5s ease, border-top-color 0.5s ease;
-            color: var(--text-light);
-            text-align: center;
-        }
-        body.dark-mode footer {
-            background: linear-gradient(0deg, #2a2a2a 0%, #1a1a1a 100%);
-            border-top: 1px solid rgba(255,255,255,0.08);
-            color: #cccccc;
-        }
-        .footer-link {
-            color: var(--text-dark);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
-            font-size: 0.9rem;
-            margin: 0 10px;
-        }
-        .footer-link:hover {
-            color: var(--accent-color);
-        }
-
-        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-on-scroll { /* For elements you want to animate as they appear */
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .animate-on-scroll.is-visible {
-            opacity: 1;
-            transform: translateY(0);
         }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg sticky-top">
+<nav class="navbar navbar-expand-lg sticky-top mb-4">
     <div class="container">
-        <a class="navbar-brand" href="{{ url_for('home') }}">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="Trivora Logo">
-            Trivora
+        <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Trivora Logo" style="height: 45px;">
+            <img src="{{ url_for('static', filename='text.png') }}" alt="TRIVORA" style="height: 25px; margin-left: 10px;">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -270,56 +158,35 @@
                 {% else %}
                     <a class="nav-link" href="{{ url_for('login') }}">Login</a>
                 {% endif %}
-                <button id="darkModeToggle" class="ms-3">🌙</button>
+                <button id="darkModeToggle" class="btn ms-lg-3" style="font-size: 1.4rem;">🌙</button>
             </div>
         </div>
     </div>
 </nav>
 
-<header class="hero-section">
-    <div class="container">
-        <h1>Master Your Potential.</h1>
-        <p>Clean, modern, and structured learning paths for you to unlock true growth and professional skills.</p>
-        <a href="{{ url_for('home') }}" class="btn btn-aesthetic">Explore Pathways</a>
-    </div>
-</header>
-
-<div class="container mt-5">
+<div class="container">
     {% block content %}{% endblock %}
 </div>
 
-<footer class="mt-5">
+<footer class="mt-5 py-5 text-center" style="background: rgba(0,0,0,0.02); border-top: 1px solid rgba(0,0,0,0.05);">
     <div class="container">
-        <div class="footer-links mb-3">
-            <a href="{{ url_for('contact') }}" class="footer-link">Contact Us</a>
-            <span class="mx-2 text-muted">|</span>
-            <a href="{{ url_for('privacy') }}" class="footer-link">Privacy Policy</a>
+        <div class="mb-3">
+            <img src="{{ url_for('static', filename='text.png') }}" alt="Trivora" style="height: 25px; opacity: 0.8;">
         </div>
-        <p class="text-muted small">© 2026 Trivora Blog. Crafted for Potential.</p>
+        <div class="footer-links mb-4">
+            <a href="{{ url_for('contact') }}" class="mx-3 text-decoration-none fw-bold" style="color: #5d4037;">Contact Us</a>
+            <a href="{{ url_for('privacy') }}" class="mx-3 text-decoration-none fw-bold" style="color: #5d4037;">Privacy Policy</a>
+        </div>
+        <p class="text-muted small">© 2026 Crafted for Potential.</p>
     </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Dark Mode Toggle
     const toggleBtn = document.getElementById('darkModeToggle');
     toggleBtn.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         toggleBtn.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-    });
-
-    // Animate on Scroll (Example: for cards or sections)
-    // Add class="animate-on-scroll" to elements you want to animate
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-            }
-        });
-    }, { threshold: 0.2 }); // Element becomes visible when 20% is in viewport
-
-    document.querySelectorAll('.animate-on-scroll').forEach(element => {
-        observer.observe(element);
     });
 </script>
 </body>
