@@ -211,8 +211,15 @@ def contact():
 @app.route('/privacy-policy')
 def privacy():
     return render_template('privacy.html')
+
+# Ye route batayega ki aapki key kya hai
+@app.route('/e35d5ba6bea14a9581ce9e6f6b6c5c87.txt')  # Yahan apni file ka exact naam likhein
+def index_now_key():
+    # Return mein wahi key likhein jo file ke andar hai
+    return "e35d5ba6bea14a9581ce9e6f6b6c5c87"
 if __name__ == '__main__':
     app.run()
+
 
 
 
