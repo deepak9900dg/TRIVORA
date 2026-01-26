@@ -8,84 +8,115 @@
       gtag('js', new Date());
       gtag('config', 'G-1G407RQJTJ');
     </script>
+
     <meta name="p:domain_verify" content="c38f713f4ed26a61ccbb22df3b8dfb96"/>
     <meta name="google-site-verification" content="6Qy-v_fgbWhwu7cAN5kcIG2A-pH3KiUCAfh8SGhxH7E" />
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trivora - Learn & Grow</title>
+    
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <style>
-        /* Navbar ki unchai (height) badhane ke liye padding badha di hai */
-.navbar { 
-    background-color: var(--bg-color) !important; /* Ab ye Golden Cream hi rahega */
-    opacity: 1 !important;
-    padding: 15px 0 !important; 
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    z-index: 1050;
-}
+        :root { 
+            --bg-color: #FFF8E1; /* Golden Cream Page Color */
+            --nav-bg: #FFF8E1; 
+        }
+        
+        body { 
+            background-color: var(--bg-color); 
+            font-family: 'Montserrat', sans-serif; 
+            overflow-x: hidden; 
+        }
 
-/* Logo aur Trivora Text ka size bada kiya gaya hai */
-.brand-logo-img { 
-    height: 48px !important; /* Pehle 38px tha */
-    transition: 0.3s;
-}
+        /* Transparency Fix */
+        .navbar { 
+            background-color: var(--nav-bg) !important; 
+            opacity: 1 !important;
+            padding: 15px 0 !important; 
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            z-index: 1050;
+        }
 
-.brand-text-img { 
-    height: 28px !important; /* Pehle 22px tha */
-    margin-left: 12px !important; 
-}
+        .brand-logo-img { height: 48px !important; transition: 0.3s; }
+        .brand-text-img { height: 28px !important; margin-left: 12px !important; }
 
-/* Right side ke buttons ko thoda niche aur bada karne ke liye */
-.navbar-nav-scrollable {
-    display: flex !important;
-    align-items: center;
-    margin-top: 5px; /* Buttons ko slightly niche karne ke liye */
-}
+        .navbar-nav-scrollable {
+            display: flex !important;
+            align-items: center;
+            margin-top: 5px;
+        }
 
-.nav-link { 
-    font-size: 1rem !important; /* Font size bada kiya gaya hai */
-    padding: 5px 12px !important; /* Spacing thodi badhai hai */
-    font-weight: 600; 
-    color: #2d3436 !important;
-    white-space: nowrap;
-}
+        /* Circular Icons */
+        .nav-icon-circle {
+            width: 40px;
+            height: 40px;
+            background: rgba(0,0,0,0.04);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            font-size: 1.2rem;
+            color: #2d3436;
+        }
+        
+        .nav-link:hover .nav-icon-circle {
+            background: #ff8a65;
+            color: white;
+            transform: scale(1.1);
+        }
 
-/* Dark mode button ka size bhi thoda bada */
-#darkModeToggle {
-    font-size: 1.4rem !important;
-    margin-left: 15px !important;
-}
+        .nav-link { 
+            padding: 5px 12px !important; 
+            display: flex;
+            align-items: center;
+        }
 
-/* Mobile responsive adjustments */
-@media (max-width: 480px) {
-    .navbar { padding: 12px 0 !important; }
-    .brand-logo-img { height: 38px !important; }
-    .brand-text-img { height: 20px !important; }
-    .nav-link { font-size: 0.85rem !important; padding: 4px 6px !important; }
-}
+        #darkModeToggle { font-size: 1.5rem !important; margin-left: 10px !important; }
+
+        @media (max-width: 480px) {
+            .navbar { padding: 10px 0 !important; }
+            .brand-logo-img { height: 38px !important; }
+            .brand-text-img { height: 20px !important; }
+            .nav-icon-circle { width: 34px; height: 34px; font-size: 1rem; }
+        }
+
+        body.dark-mode { background-color: #1a1a1a; color: white; }
+        body.dark-mode .navbar { background-color: #222 !important; }
+        body.dark-mode .nav-icon-circle { background: rgba(255,255,255,0.1); color: white; }
     </style>
 </head>
 <body>
 
 <nav class="navbar sticky-top">
-    <div class="container nav-custom-container">
+    <div class="container d-flex justify-content-between align-items-center">
         <a class="navbar-brand d-flex align-items-center m-0" href="{{ url_for('home') }}">
-            <img src="{{ url_for('static', filename='logo.png') }}" class="brand-logo-img" alt="Trivora Symbol" style="height: 38px;">
-            <img src="{{ url_for('static', filename='text.png') }}" class="brand-text-img" alt="TRIVORA" style="height: 22px; margin-left: 8px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" class="brand-logo-img" alt="Trivora Symbol">
+            <img src="{{ url_for('static', filename='text.png') }}" class="brand-text-img" alt="TRIVORA">
         </a>
 
         <div class="navbar-nav-scrollable">
-            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+            <a class="nav-link" href="{{ url_for('home') }}" title="Home">
+                <div class="nav-icon-circle"><i class="bi bi-house-door"></i></div>
+            </a>
+
             {% if session.get('user') %}
-                <a class="nav-link" href="{{ url_for('upload') }}">Create</a>
-                <a class="nav-link text-danger" href="{{ url_for('logout') }}">Logout</a>
+                <a class="nav-link" href="{{ url_for('upload') }}" title="Create">
+                    <div class="nav-icon-circle"><i class="bi bi-plus-lg"></i></div>
+                </a>
+                <a class="nav-link" href="{{ url_for('logout') }}" title="Logout">
+                    <div class="nav-icon-circle text-danger"><i class="bi bi-door-open"></i></div>
+                </a>
             {% else %}
                 <a class="nav-link" href="{{ url_for('login') }}">Login</a>
             {% endif %}
-            <button id="darkModeToggle" class="btn p-0 ms-1" style="font-size: 1.1rem; background:none; border:none;">🌙</button>
+            
+            <button id="darkModeToggle" class="btn p-0 ms-2" style="background:none; border:none;">🌙</button>
         </div>
     </div>
 </nav>
@@ -113,5 +144,3 @@
 </script>
 </body>
 </html>
-
-
