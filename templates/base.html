@@ -1,131 +1,110 @@
 <!DOCTYPE html>
-<html lang="hi"> <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1G407RQJTJ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-1G407RQJTJ');
-    </script>
-
+<html lang="hi">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="content-language" content="hi, en">
-    <meta name="robots" content="index, follow"> <meta name="google-site-verification" content="6Qy-v_fgbWhwu7cAN5kcIG2A-pH3KiUCAfh8SGhxH7E" />
-    <meta name="p:domain_verify" content="c38f713f4ed26a61ccbb22df3b8dfb96"/>
-
+    <meta name="robots" content="index, follow">
     <title>Trivora - Learn & Grow</title>
-    <meta name="description" content="Trivora - A platform to learn professional skills and growth mindset.">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Trivora",
-      "url": "https://trivora-blog.vercel.app/",
-      "logo": "https://trivora-blog.vercel.app/static/logo.png"
-    }
-    </script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
 
     <style>
-        body {
-            background-color: #f2ede4;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        body { background-color: #f2ede4; transition: 0.3s; overflow-x: hidden; }
+        
+        /* Full Width Post Fix */
+        .full-page-post {
+            width: 100vw !important;
+            max-width: 100vw !important;
+            margin-left: calc(-50vw + 50%);
+            padding: 0 !important;
+        }
+
+        /* Navbar Styling */
+        .navbar { background-color: #fffaf0 !important; padding: 10px 0; }
+        
+        /* Fancy Circle Translate Button */
+        #google_translate_element {
+            width: 40px;
+            height: 40px;
+            overflow: hidden;
+            border-radius: 50%;
+            border: 2px solid #ff8a65;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: 0.3s;
+            position: relative;
         }
-        .navbar {
-            background-color: #fffaf0 !important;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            padding: 12px 0;
+        #google_translate_element:hover { transform: scale(1.1); box-shadow: 0 0 10px rgba(255,138,101,0.5); }
+
+        /* Hide Google Branding/Text */
+        .goog-te-gadget-simple {
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            font-size: 0 !important; /* Hide text */
         }
-        .navbar-brand {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            color: #2d3436 !important;
+        .goog-te-gadget-icon {
+            margin: 0 !important;
+            width: 24px !important;
+            height: 24px !important;
         }
-        /* Full Width Post Setting */
-        .full-width-container {
-            width: 100% !important;
-            max-width: 100% !important;
-            padding: 0;
-            margin: 0;
-        }
-        /* Standard Container for other pages */
-        .content-area {
-            padding-top: 20px;
-        }
-        .btn-aesthetic {
-            background-color: #ff8a65;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 6px;
-        }
-        body.dark-mode { background-color: #121212; color: #ffffff; }
-        body.dark-mode .navbar { background-color: #1e1e1e !important; }
-        /* Translate widget styling */
-        #google_translate_element { margin-right: 15px; }
+        .goog-te-menu-value span { display: none !important; }
+        .goog-te-banner-frame { display: none !important; }
+        body { top: 0 !important; }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg sticky-top mb-4">
-    <div class="container">
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid px-4">
         <a class="navbar-brand d-flex align-items-center notranslate" href="{{ url_for('home') }}">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="Trivora Logo" style="height: 40px; width: auto;">
-            <img src="{{ url_for('static', filename='text.png') }}" alt="TRIVORA" style="height: 25px; width: auto; margin-left: 10px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Trivora Logo" style="height: 35px;">
+            <img src="{{ url_for('static', filename='text.png') }}" alt="TRIVORA" style="height: 20px; margin-left: 8px;" class="d-none d-sm-block">
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <div class="d-flex align-items-center ms-auto">
+            <div id="google_translate_element" title="Translate Language"></div>
+            
+            <button id="darkModeToggle" class="btn btn-sm ms-2" style="font-size: 1.2rem;">🌙</button>
+            
+            <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="width: 20px; height: 20px;"></span>
+            </button>
+        </div>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <div class="ms-auto d-flex align-items-center">
-                <div id="google_translate_element"></div>
-                
-                <a class="nav-link px-3 fw-medium" href="{{ url_for('home') }}">Home</a>
+            <div class="navbar-nav ms-3">
+                <a class="nav-link fw-medium" href="{{ url_for('home') }}">Home</a>
                 {% if session.get('user') %}
-                    <a class="nav-link px-3 fw-medium" href="{{ url_for('upload') }}">Create</a>
-                    <a class="nav-link px-3 fw-medium text-danger" href="{{ url_for('logout') }}">Logout</a>
+                    <a class="nav-link fw-medium" href="{{ url_for('upload') }}">Create</a>
+                    <a class="nav-link fw-medium text-danger" href="{{ url_for('logout') }}">Logout</a>
                 {% else %}
-                    <a class="nav-link px-3 fw-medium" href="{{ url_for('login') }}">Login</a>
+                    <a class="nav-link fw-medium" href="{{ url_for('login') }}">Login</a>
                 {% endif %}
-                <button id="darkModeToggle" class="btn btn-sm btn-outline-secondary ms-2" style="border-radius: 50%; width: 35px; height: 35px; padding: 0;">🌙</button>
             </div>
         </div>
     </div>
 </nav>
 
-{% block container_type %}
-<div class="container content-area">
+{% block post_layout %}
+<div class="container mt-4">
 {% endblock %}
     {% block content %}{% endblock %}
 </div>
-
-<footer class="mt-5 py-4" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.2);">
-    <div class="container text-center">
-        <div class="footer-links mb-3">
-            <a href="{{ url_for('contact') }}" class="footer-link">Contact Us</a>
-            <span class="mx-2 text-muted">|</span>
-            <a href="{{ url_for('privacy') }}" class="footer-link">Privacy Policy</a>
-        </div>
-        <p class="text-muted small">© 2026 Trivora Blog. Crafted for Potential.</p>
-    </div>
-</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script type="text/javascript">
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
-    pageLanguage: 'hi', 
-    includedLanguages: 'hi,en', 
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    pageLanguage: 'hi',
+    includedLanguages: 'hi,en',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+    autoDisplay: false
   }, 'google_translate_element');
 }
 </script>
