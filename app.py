@@ -4,6 +4,20 @@ from datetime import datetime
 import os
 import cloudinary
 import cloudinary.uploader
+import requests
+
+def send_to_indexnow(new_post_url):
+    url = "https://www.bing.com/indexnow"
+    params = {
+        "url": new_post_url,
+        "key": "e35d5ba6bea14a9581ce9e6f6b6c5c87" # Aapki download ki hui key
+    }
+    try:
+        response = requests.get(url, params=params)
+        if response.status_code == 200:
+            print(f"Success: {new_post_url} indexing request sent!")
+    except Exception as e:
+        print(f"Error sending to IndexNow: {e}")
 
 app = Flask(__name__)
 from datetime import timedelta
@@ -145,6 +159,13 @@ def upload():
         new_post = Post(title=title, category=category, content=content, image_file=image_url, author=session['user'])
         db.session.add(new_post)
         db.session.commit()
+        post_url = f"https://trivora-blog.vercel.app/post/{new_post.id}" 
+        
+        # IndexNow function ko call karein
+        try:
+            send_to_indexnow(post_url)
+        except:
+            pass
         return redirect(url_for('category', name=category))
     return render_template('upload.html')
 
@@ -219,6 +240,7 @@ def index_now_key():
     return "e35d5ba6bea14a9581ce9e6f6b6c5c87"
 if __name__ == '__main__':
     app.run()
+
 
 
 
