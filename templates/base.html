@@ -14,7 +14,8 @@
     <meta name="google-site-verification" content="6Qy-v_fgbWhwu7cAN5kcIG2A-pH3KiUCAfh8SGhxH7E" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="content-language" content="hi, en">
+    <meta http-equiv="content-language" content="hi, en"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
 
     <title>Trivora - Learn & Grow</title>
     <meta name="description" content="Trivora - A platform to learn professional skills and growth mindset.">
@@ -120,7 +121,9 @@
                  alt="TRIVORA"
                  style="height: 25px; width: auto; margin-left: 10px;">
         </a>
-            <div class="ms-auto d-flex align-items-center">
+                <div id="google_translate_element" class="ms-auto"></div>
+          </div>
+  </nav>
                 <a class="nav-link px-3 fw-medium" href="{{ url_for('home') }}">Home</a>
                 {% if session.get('user') %}
                     <a class="nav-link px-3 fw-medium" href="{{ url_for('upload') }}">Create</a>
@@ -173,6 +176,7 @@
 </body>
 
 </html>
+
 
 
 
