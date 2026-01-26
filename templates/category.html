@@ -2,46 +2,80 @@
 {% block content %}
 <div class="container py-5">
     <div class="text-center mb-5 animate-on-scroll">
-        <h1 class="display-4 fw-bold" style="color: #5d4037; font-family: 'Playfair Display', serif;">{{ category_name }} Hub</h1>
+        <h1 class="display-4 fw-bold" style="color: #5d4037; font-family: 'Montserrat', sans-serif; letter-spacing: -1px;">
+            {{ category_name }} <span style="color: #ff8a65;">Hub</span>
+        </h1>
+        <div style="width: 60px; height: 4px; background: #ff8a65; margin: 10px auto; border-radius: 10px;"></div>
     </div>
 
     <div class="row g-4">
         {% for post in posts %}
         <div class="col-md-6 col-lg-4">
-            <div class="card border-0 rounded-5 shadow-sm h-100 overflow-hidden" style="background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);">
+            <div class="card border-0 rounded-5 shadow-sm h-100 overflow-hidden" 
+                 style="background: rgba(255,255,255,0.8); backdrop-filter: blur(15px); transition: 0.4s ease;">
                 
-                {% if post.image_file %}
-                    <img src="{{ url_for('static', filename='uploads/' + post.image_file) }}" 
-                         class="card-img-top" 
-                         alt="{{ post.title }}" 
-                         style="height: 220px; object-fit: cover;"
-                         onerror="this.src='{{ post.image_url }}'"> {% elif post.image_url %}
-                    <img src="{{ post.image_url }}" 
-                         class="card-img-top" 
-                         alt="{{ post.title }}" 
-                         style="height: 220px; object-fit: cover;">
-                {% else %}
-                    <img src="https://via.placeholder.com/400x250?text=Trivora+Learning" 
-                         class="card-img-top" 
-                         alt="Trivora Post" 
-                         style="height: 220px; object-fit: cover;">
-                {% endif %}
+                <div class="position-relative">
+                    {% if post.image_file %}
+                        <img src="{{ url_for('static', filename='uploads/' + post.image_file) }}" 
+                             class="card-img-top" 
+                             alt="{{ post.title }}" 
+                             style="height: 230px; object-fit: cover;"
+                             onerror="this.onerror=null; this.src='{{ post.image_url if post.image_url else 'https://via.placeholder.com/600x400?text=Trivora+Learning' }}';">
+                    {% elif post.image_url %}
+                        <img src="{{ post.image_url }}" 
+                             class="card-img-top" 
+                             alt="{{ post.title }}" 
+                             style="height: 230px; object-fit: cover;"
+                             onerror="this.src='https://via.placeholder.com/600x400?text=Trivora+Blog';">
+                    {% else %}
+                        <img src="https://via.placeholder.com/600x400?text=Trivora+Growth" 
+                             class="card-img-top" 
+                             alt="Default Trivora Image" 
+                             style="height: 230px; object-fit: cover;">
+                    {% endif %}
+                    
+                    <span class="position-absolute top-0 start-0 m-3 badge rounded-pill bg-light text-dark shadow-sm px-3 py-2" style="font-size: 0.7rem; font-weight: 700;">
+                        {{ category_name }}
+                    </span>
+                </div>
 
                 <div class="card-body p-4">
-                    <h3 class="fw-bold mb-3" style="color: #5d4037; font-size: 1.4rem;">{{ post.title }}</h3>
-                    <p class="text-secondary small">{{ post.content[:100] | striptags }}...</p>
+                    <h3 class="fw-bold mb-3" style="color: #2d3436; font-size: 1.3rem; line-height: 1.4;">{{ post.title }}</h3>
+                    <p class="text-secondary mb-4" style="font-size: 0.9rem; line-height: 1.6;">
+                        {{ post.content[:110] | striptags }}...
+                    </p>
 
-                    <a href="{{ url_for('post_detail', post_id=post.id) }}" 
-                       class="btn-aesthetic text-decoration-none d-inline-block mt-2" 
-                       style="font-size: 0.85rem; padding: 10px 25px;">Read Full Post →</a>
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <a href="{{ url_for('post_detail', post_id=post.id) }}" 
+                           class="btn-aesthetic text-decoration-none" 
+                           style="font-size: 0.8rem; padding: 10px 22px; border-radius: 50px;">
+                           Read Mastery Guide →
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
         {% else %}
-        <div class="col-12 text-center">
-            <p class="text-muted">No posts found in this category.</p>
+        <div class="col-12 text-center py-5">
+            <h3 class="text-muted">Is category mein abhi koi posts nahi hain.</h3>
+            <a href="{{ url_for('home') }}" class="btn btn-outline-secondary mt-3">Back to Home</a>
         </div>
         {% endfor %}
     </div>
 </div>
+
+<style>
+    /* Fancy Hover Effect */
+    .card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+    }
+    .card:hover img {
+        transform: scale(1.05);
+        transition: 0.6s ease;
+    }
+    .card-img-top {
+        transition: 0.6s ease;
+    }
+</style>
 {% endblock %}
