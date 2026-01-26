@@ -18,42 +18,52 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        :root { --bg-color: #f2ede4; --nav-bg: #fffaf0; --accent: #ff8a65; }
-        body { background-color: var(--bg-color); font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+        /* Navbar ki unchai (height) badhane ke liye padding badha di hai */
+.navbar { 
+    background-color: var(--nav-bg) !important; 
+    padding: 15px 0 !important; /* Pehle 10px tha, ab 15px karke chauda kiya hai */
+    border-bottom: 1px solid rgba(0,0,0,0.05); 
+}
 
-        /* NAVBAR FIX: Ab mobile par bhi text aur buttons hamesha dikhenge */
-        .navbar { background-color: var(--nav-bg) !important; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .nav-custom-container { display: flex; align-items: center; justify-content: space-between; width: 100%; flex-wrap: nowrap; }
-        
-        .navbar-nav-scrollable {
-            display: flex !important;
-            flex-direction: row !important;
-            align-items: center;
-            margin-left: auto;
-        }
+/* Logo aur Trivora Text ka size bada kiya gaya hai */
+.brand-logo-img { 
+    height: 48px !important; /* Pehle 38px tha */
+    transition: 0.3s;
+}
 
-        .nav-link { 
-            font-size: 0.8rem; 
-            padding: 4px 6px !important; 
-            font-weight: 600; 
-            color: #2d3436 !important;
-            white-space: nowrap;
-        }
+.brand-text-img { 
+    height: 28px !important; /* Pehle 22px tha */
+    margin-left: 12px !important; 
+}
 
-        /* Phone par size auto-adjust hoga */
-        @media (max-width: 480px) {
-            .brand-text-img { height: 16px !important; margin-left: 4px !important; }
-            .brand-logo-img { height: 30px !important; }
-            .nav-link { font-size: 0.72rem; padding: 3px 4px !important; }
-        }
+/* Right side ke buttons ko thoda niche aur bada karne ke liye */
+.navbar-nav-scrollable {
+    display: flex !important;
+    align-items: center;
+    margin-top: 5px; /* Buttons ko slightly niche karne ke liye */
+}
 
-        /* Dark Mode */
-        body.dark-mode { background-color: #121212; color: #ffffff; }
-        body.dark-mode .navbar { background-color: #1a1a1a !important; }
-        body.dark-mode .nav-link { color: #eee !important; }
+.nav-link { 
+    font-size: 1rem !important; /* Font size bada kiya gaya hai */
+    padding: 5px 12px !important; /* Spacing thodi badhai hai */
+    font-weight: 600; 
+    color: #2d3436 !important;
+    white-space: nowrap;
+}
 
-        /* Category Image Aspect Ratio Fix */
-        .card-img-top { height: 200px; object-fit: cover; width: 100%; }
+/* Dark mode button ka size bhi thoda bada */
+#darkModeToggle {
+    font-size: 1.4rem !important;
+    margin-left: 15px !important;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 480px) {
+    .navbar { padding: 12px 0 !important; }
+    .brand-logo-img { height: 38px !important; }
+    .brand-text-img { height: 20px !important; }
+    .nav-link { font-size: 0.85rem !important; padding: 4px 6px !important; }
+}
     </style>
 </head>
 <body>
@@ -101,3 +111,4 @@
 </script>
 </body>
 </html>
+
