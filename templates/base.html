@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="hi"> <head>
+<html lang="hi">
+<head>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1G407RQJTJ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -13,7 +14,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="content-language" content="hi, en">
-    <meta name="robots" content="index, follow"> <title>Trivora - Learn & Grow</title>
+    <meta name="robots" content="index, follow">
+
+    <title>Trivora - Learn & Grow</title>
     <meta name="description" content="Trivora - A platform to learn professional skills and growth mindset.">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
 
@@ -38,23 +41,23 @@
         /* FULL PAGE POST (Margins zero karne ke liye) */
         .full-page-post { width: 100vw !important; margin-left: calc(-50vw + 50%); padding: 0 !important; overflow: hidden; }
 
-        /* FANCY COMPACT TRANSLATE BUTTON */
-        #google_translate_element { display: inline-block; vertical-align: middle; }
+        /* FANCY COMPACT TRANSLATE BUTTON (Fancy Circle) */
+        #google_translate_element { display: inline-block; vertical-align: middle; margin-right: 10px; }
         .goog-te-gadget-simple {
             background-color: #ff8a65 !important;
             border: none !important;
-            padding: 6px !important;
+            padding: 5px !important;
             border-radius: 50% !important;
-            width: 38px !important;
-            height: 38px !important;
+            width: 32px !important;
+            height: 32px !important;
             display: flex !important;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .goog-te-gadget-simple img, .goog-te-menu-value span, .goog-te-gadget-icon { display: none !important; }
-        .goog-te-gadget-simple::before { content: '文'; color: white; font-weight: bold; font-size: 16px; }
+        .goog-te-gadget-simple::before { content: '文'; color: white; font-weight: bold; font-size: 13px; }
         .goog-te-banner-frame { display: none !important; }
 
         /* Dark Mode fixes */
@@ -62,7 +65,6 @@
         body.dark-mode .navbar { background-color: #1e1e1e !important; border-bottom: 1px solid #333; }
         body.dark-mode .navbar-brand { color: #ffffff !important; }
         
-        /* Buttons Alignment Fix */
         .nav-link { color: #2d3436 !important; }
         body.dark-mode .nav-link { color: white !important; }
     </style>
@@ -70,29 +72,30 @@
 <body>
 
 <nav class="navbar navbar-expand-lg sticky-top mb-4">
-    <div class="container d-flex align-items-center justify-content-between">
+    <div class="container">
         <a class="navbar-brand notranslate" href="{{ url_for('home') }}">
             <img src="{{ url_for('static', filename='logo.png') }}" alt="Trivora Logo" style="height: 38px; width: auto;">
             <img src="{{ url_for('static', filename='text.png') }}" alt="TRIVORA" style="height: 20px; width: auto; margin-left: 10px;" class="d-none d-sm-block">
         </a>
 
-        <div class="d-flex align-items-center">
-            <div id="google_translate_element" class="me-2"></div>
-            <button id="darkModeToggle" class="btn btn-sm p-0 me-2" style="font-size: 1.3rem;">🌙</button>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon" style="width: 18px; height: 18px;"></span>
-            </button>
-        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon" style="width: 18px; height: 18px;"></span>
+        </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <div class="navbar-nav ms-auto text-end">
-                <a class="nav-link px-3 fw-medium" href="{{ url_for('home') }}">Home</a>
+            <div class="navbar-nav ms-auto align-items-center">
+                
+                <div id="google_translate_element"></div>
+
+                <a class="nav-link px-2 fw-medium" href="{{ url_for('home') }}">Home</a>
                 {% if session.get('user') %}
-                    <a class="nav-link px-3 fw-medium" href="{{ url_for('upload') }}">Create</a>
-                    <a class="nav-link px-3 fw-medium text-danger" href="{{ url_for('logout') }}">Logout</a>
+                    <a class="nav-link px-2 fw-medium" href="{{ url_for('upload') }}">Create</a>
+                    <a class="nav-link px-2 fw-medium text-danger" href="{{ url_for('logout') }}">Logout</a>
                 {% else %}
-                    <a class="nav-link px-3 fw-medium" href="{{ url_for('login') }}">Login</a>
+                    <a class="nav-link px-2 fw-medium" href="{{ url_for('login') }}">Login</a>
                 {% endif %}
+
+                <button id="darkModeToggle" class="btn btn-sm p-0 ms-2" style="font-size: 1.2rem; border:none; background:none;">🌙</button>
             </div>
         </div>
     </div>
@@ -137,4 +140,3 @@ function googleTranslateElementInit() {
 </script>
 </body>
 </html>
-
