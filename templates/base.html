@@ -21,102 +21,101 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <style>
-        :root { 
-            --bg-color: #FFF8E1; /* Golden Cream Page Color */
-            --nav-bg: #F5E6CC; 
-        }
-        
-        body { 
-            background-color: var(--bg-color); 
-            font-family: 'Montserrat', sans-serif; 
-            overflow-x: hidden; 
-        }
-
-        /* Transparency Fix */
-        .navbar { 
-            background-color: var(--nav-bg) !important; 
-            opacity: 1 !important;
-            padding: 15px 0 !important; 
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            z-index: 1050;
-        }
-
-        .brand-logo-img { height: 48px !important; transition: 0.3s; }
-        .brand-text-img { height: 28px !important; margin-left: 12px !important; }
-
-        .navbar-nav-scrollable {
-            display: flex !important;
-            align-items: center;
-            margin-top: 5px;
-        }
-
-        /* Circular Icons */
-        .nav-icon-circle {
-            width: 40px;
-            height: 40px;
-            background: rgba(0,0,0,0.04);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+       <style>
+        body {
+            background-color: #fcf9f2; /* Creamy White background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             transition: 0.3s;
-            font-size: 1.2rem;
-            color: #2d3436;
-        }
-        
-        .nav-link:hover .nav-icon-circle {
-            background: #ff8a65;
-            color: white;
-            transform: scale(1.1);
         }
 
-        .nav-link { 
-            padding: 5px 12px !important; 
+        /* Navbar with Cream Color */
+        .navbar {
+            background-color: #fffaf0 !important; /* Soft Creamy Header */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 12px 0;
+        }
+
+        .navbar-brand {
             display: flex;
             align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #2d3436 !important;
+            text-decoration: none;
         }
 
-        #darkModeToggle { font-size: 1.5rem !important; margin-left: 10px !important; }
-
-        @media (max-width: 480px) {
-            .navbar { padding: 10px 0 !important; }
-            .brand-logo-img { height: 38px !important; }
-            .brand-text-img { height: 20px !important; }
-            .nav-icon-circle { width: 34px; height: 34px; font-size: 1rem; }
+        /* Logo Styling */
+        .brand-logo {
+            height: 40px;
+            width: auto;
+            margin-right: 12px;
+            /* Filter use kar sakte hain agar logo ka color thoda adjust karna ho */
         }
 
-        body.dark-mode { background-color: #1a1a1a; color: white; }
-        body.dark-mode .navbar { background-color: #222 !important; }
-        body.dark-mode .nav-icon-circle { background: rgba(255,255,255,0.1); color: white; }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            background-color: white;
+        }
+
+        .btn-aesthetic {
+            background-color: #ff8a65;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .btn-aesthetic:hover {
+            background-color: #e57373;
+            transform: translateY(-2px);
+        }
+
+        /* Simple Dark Mode */
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        body.dark-mode .navbar {
+            background-color: #1e1e1e !important;
+            border-bottom: 1px solid #333;
+        }
+        body.dark-mode .navbar-brand {
+            color: #ffffff !important;
+        }
+        body.dark-mode .card {
+            background-color: #1e1e1e;
+            color: white;
+            border: 1px solid #333;
+        }
     </style>
 </head>
 <body>
 
-<nav class="navbar sticky-top">
-    <div class="container d-flex justify-content-between align-items-center">
-        <a class="navbar-brand d-flex align-items-center m-0" href="{{ url_for('home') }}">
-            <img src="{{ url_for('static', filename='logo.png') }}" class="brand-logo-img" alt="Trivora Symbol">
-            <img src="{{ url_for('static', filename='text.png') }}" class="brand-text-img" alt="TRIVORA">
+<nav class="navbar navbar-expand-lg sticky-top mb-4">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='logo.png') }}"
+                 alt="Logo"
+                 style="height: 40px; width: auto;">
+
+            <img src="{{ url_for('static', filename='text.png') }}"
+                 alt="TRIVORA"
+                 style="height: 25px; width: auto; margin-left: 10px;">
         </a>
-
-        <div class="navbar-nav-scrollable">
-            <a class="nav-link" href="{{ url_for('home') }}" title="Home">
-                <div class="nav-icon-circle"><i class="bi bi-house-door"></i></div>
-            </a>
-
-            {% if session.get('user') %}
-                <a class="nav-link" href="{{ url_for('upload') }}" title="Create">
-                    <div class="nav-icon-circle"><i class="bi bi-plus-lg"></i></div>
-                </a>
-                <a class="nav-link" href="{{ url_for('logout') }}" title="Logout">
-                    <div class="nav-icon-circle text-danger"><i class="bi bi-door-open"></i></div>
-                </a>
-            {% else %}
-                <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-            {% endif %}
-            
-            <button id="darkModeToggle" class="btn p-0 ms-2" style="background:none; border:none;">🌙</button>
+            <div class="ms-auto d-flex align-items-center">
+                <a class="nav-link px-3 fw-medium" href="{{ url_for('home') }}">Home</a>
+                {% if session.get('user') %}
+                    <a class="nav-link px-3 fw-medium" href="{{ url_for('upload') }}">Create</a>
+                    <a class="nav-link px-3 fw-medium text-danger" href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                    <a class="nav-link px-3 fw-medium" href="{{ url_for('login') }}">Login</a>
+                {% endif %}
+                <button id="darkModeToggle" class="btn btn-sm btn-outline-secondary ms-2" style="border-radius: 50%; width: 35px; height: 35px; padding: 0;">🌙</button>
         </div>
     </div>
 </nav>
@@ -144,6 +143,7 @@
 </script>
 </body>
 </html>
+
 
 
 
