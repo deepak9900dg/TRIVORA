@@ -16,7 +16,7 @@
                         <label class="form-label fw-bold small text-uppercase">Category</label>
                         <select name="category" class="form-select rounded-4 p-3 border-0 bg-light">
                             <option value="Psychology" {% if post.category == 'Psychology' %}selected{% endif %}>Psychology</option>
-                             <option value="History" {% if post.category == 'History' %}selected{% endif %}>History</option>
+                            <option value="History" {% if post.category == 'History' %}selected{% endif %}>History</option>
                             <option value="Skills" {% if post.category == 'Skills' %}selected{% endif %}>Skills</option>
                             <option value="Courses" {% if post.category == 'Courses' %}selected{% endif %}>Courses</option>
                             <option value="Growth" {% if post.category == 'Growth' %}selected{% endif %}>Growth</option>
@@ -41,3 +41,4 @@
 </div>
 
 {% endblock %}
+
