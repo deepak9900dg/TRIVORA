@@ -98,7 +98,7 @@ with app.app_context():
 @app.route('/')
 def home():
     try:
-        posts = Post.query.order_by(Post.date_posted.desc()).limit(6).all()
+        posts = Post.query.order_by(Post.date_posted.asc()).limit(6).all()
         return render_template('home.html', posts=posts)
     except Exception as e:
         return f"Database Error: {str(e)}"
@@ -240,6 +240,7 @@ def index_now_key():
     return "e35d5ba6bea14a9581ce9e6f6b6c5c87"
 if __name__ == '__main__':
     app.run()
+
 
 
 
