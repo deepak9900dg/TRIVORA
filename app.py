@@ -138,7 +138,7 @@ def logout():
 
 @app.route('/category/<name>')
 def category(name):
-    posts = Post.query.filter_by(category=name).order_by(Post.date_posted.desc()).all()
+    posts = Post.query.filter_by(category=name).order_by(Post.date_posted.asc()).all()
     return render_template('category.html', category_name=name, posts=posts)
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -240,6 +240,7 @@ def index_now_key():
     return "e35d5ba6bea14a9581ce9e6f6b6c5c87"
 if __name__ == '__main__':
     app.run()
+
 
 
 
