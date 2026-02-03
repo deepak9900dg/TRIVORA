@@ -239,17 +239,26 @@ def index_now_key():
     # Return mein wahi key likhein jo file ke andar hai
     return "e35d5ba6bea14a9581ce9e6f6b6c5c87"
     
-    @app.route("/sitemap.xml", methods=["GET"])
+ @app.route('/sitemap.xml')
 def sitemap():
-    pages = [
-        ("https://trivora-blog.vercel.app/", "2026-02-03"),
-        ("https://trivora-blog.vercel.app/contact", "2026-02-03"),
-    ]
-    sitemap_xml = render_template("sitemap.xml", pages=pages)
-    return Response(sitemap_xml, mimetype='application/xml')
+    pages = []
+    today = datetime.now().strftime('%Y-%m-%d')
+    pages.append(["https://trivora-blog.vercel.app/", today])
+    pages.append([url_for('contact', _external=True), today])
+    pages.append([url_for('privacy', _external=True), today])
+
+    posts = Post.query.all()
+    for post in posts:
+        url = url_for('post_detail', post_id=post.id, _external=True)
+        pages.append([url, post.date_posted.strftime('%Y-%m-%d')])
+
+    sitemap_xml = render_template('sitemap_template.xml', pages=pages)
+    response = make_response(sitemap_xml)
+    response.headers["Content-Type"] = "application/xml"  
 
 if __name__ == '__main__':
     app.run()
+
 
 
 
