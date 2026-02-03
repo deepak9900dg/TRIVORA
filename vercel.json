@@ -2,11 +2,5 @@
   "version": 2,
   "builds": [
     { "src": "app.py", "use": "@vercel/python" }
-  ],
-  "routes": [
-    { "src": "/robots.txt", "dest": "/robots.txt" },
-    { "src": "/sitemap.xml", "dest": "/sitemap.xml" },
-    { "src": "/favicon.png", "dest": "/favicon.png" },
-    { "src": "/(.*)", "dest": "app.py" }
   ]
 }
