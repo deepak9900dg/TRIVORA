@@ -213,7 +213,7 @@ def sitemap():
     pages.append([url_for('contact', _external=True), datetime.now().strftime('%Y-%m-%d')])
 
     # 2. Privacy Policy page manual add karein
-    pages.append([url_for('privacy', _external=True), datetime.now().strftime('%Y-%m-%d')])
+    pages.append([url_for('privacy-policy', _external=True), datetime.now().strftime('%Y-%m-%d')])
 
     # Har blog post ka link automatic jodein (jaisa pehle tha)
     posts = Post.query.all()
@@ -242,6 +242,7 @@ def index_now_key():
     
 if __name__ == '__main__':
     app.run()
+
 
 
 
