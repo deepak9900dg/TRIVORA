@@ -166,8 +166,25 @@
         toggleBtn.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
     });
 </script>
+    <div id="cookieBox" style="position: fixed; bottom: 15px; left: 15px; right: 15px; background: #fff3e0; padding: 12px 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); font-size: 13px; display: none; z-index: 9999;">
+    This website uses cookies to ensure you get the best experience on Trivora.
+    <button onclick="acceptCookies()" style="margin-left: 10px; background:#ff8a65; border:none; color:white; padding:5px 12px; border-radius:4px;">Got it</button>
+</div>
+
+<script>
+    function acceptCookies() {
+        localStorage.setItem("cookiesAccepted", "yes");
+        document.getElementById("cookieBox").style.display = "none";
+    }
+
+    if (!localStorage.getItem("cookiesAccepted")) {
+        document.getElementById("cookieBox").style.display = "block";
+    }
+</script>
+
 </body>
 </html>
+
 
 
 
