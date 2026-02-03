@@ -238,8 +238,19 @@ def privacy():
 def index_now_key():
     # Return mein wahi key likhein jo file ke andar hai
     return "e35d5ba6bea14a9581ce9e6f6b6c5c87"
+    
+    @app.route("/sitemap.xml", methods=["GET"])
+def sitemap():
+    pages = [
+        ("https://trivora-blog.vercel.app/", "2026-02-03"),
+        ("https://trivora-blog.vercel.app/contact", "2026-02-03"),
+    ]
+    sitemap_xml = render_template("sitemap.xml", pages=pages)
+    return Response(sitemap_xml, mimetype='application/xml')
+
 if __name__ == '__main__':
     app.run()
+
 
 
 
