@@ -202,6 +202,7 @@ def edit_post(post_id):
         db.session.commit()
         return redirect(url_for('post_detail', post_id=post.id))
     return render_template('edit_post.html', post=post)
+    
 @app.route('/sitemap.xml')
 def sitemap():
     pages = []
@@ -209,10 +210,10 @@ def sitemap():
     pages.append(["https://trivora-blog.vercel.app/", datetime.now().strftime('%Y-%m-%d')])
 
     # 1. Contact Us page manual add karein
-    pages.append([url_for('Contact Us', _external=True), datetime.now().strftime('%Y-%m-%d')])
+    pages.append([url_for('contact', _external=True), datetime.now().strftime('%Y-%m-%d')])
 
     # 2. Privacy Policy page manual add karein
-    pages.append([url_for('Privacy Policy', _external=True), datetime.now().strftime('%Y-%m-%d')])
+    pages.append([url_for('privacy', _external=True), datetime.now().strftime('%Y-%m-%d')])
 
     # Har blog post ka link automatic jodein (jaisa pehle tha)
     posts = Post.query.all()
@@ -241,6 +242,7 @@ def index_now_key():
     
 if __name__ == '__main__':
     app.run()
+
 
 
 
