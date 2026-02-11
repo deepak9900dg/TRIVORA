@@ -203,7 +203,7 @@ def edit_post(post_id):
         return redirect(url_for('post_detail', post_id=post.id))
     return render_template('edit_post.html', post=post)
     
-# --- IS CODE KO SITEMAP ROUTE SE REPLACE KAREIN ---
+
 
 @app.route('/sitemap.xml')
 def sitemap():
@@ -260,3 +260,4 @@ def index_now_key():
 
 if __name__ == '__main__':
     app.run()
+
