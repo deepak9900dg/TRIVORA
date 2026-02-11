@@ -13,3 +13,11 @@
     }
   ]
 }
+{
+  "rewrites": [
+    {
+      "source": "/BingSiteAuth.xml",
+      "destination": "/static/BingSiteAuth.xml"
+    }
+  ]
+}
