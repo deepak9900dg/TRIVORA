@@ -13,32 +13,25 @@
         <div class="col-md-6 col-lg-4">
             <div class="card border-0 rounded-5 shadow-sm h-100 overflow-hidden" 
                  style="background: rgba(255,255,255,0.8); backdrop-filter: blur(15px); transition: 0.4s ease;">
-                
                 <div class="position-relative">
-                    {% if post.image_file %}
-                        <img src="{{ url_for('static', filename='uploads/' + post.image_file) }}" 
-                             class="card-img-top" 
-                             alt="{{ post.title }}" 
-                             style="height: 230px; object-fit: cover;"
-                             onerror="this.onerror=null; this.src='{{ post.image_url if post.image_url else 'https://via.placeholder.com/600x400?text=Trivora+Learning' }}';">
-                    {% elif post.image_url %}
-                        <img src="{{ post.image_url }}" 
-                             class="card-img-top" 
-                             alt="{{ post.title }}" 
-                             style="height: 230px; object-fit: cover;"
-                             onerror="this.src='https://via.placeholder.com/600x400?text=Trivora+Blog';">
-                    {% else %}
-                        <img src="https://via.placeholder.com/600x400?text=Trivora+Growth" 
-                             class="card-img-top" 
-                             alt="Default Trivora Image" 
-                             style="height: 230px; object-fit: cover;">
-                    {% endif %}
-                    
-                    <span class="position-absolute top-0 start-0 m-3 badge rounded-pill bg-light text-dark shadow-sm px-3 py-2" style="font-size: 0.7rem; font-weight: 700;">
-                        {{ category_name }}
-                    </span>
-                </div>
-
+    {% if post.image_file %}
+        <img src="{{ post.image_file }}" 
+             class="card-img-top" 
+             alt="{{ post.title }}" 
+             style="height: 230px; object-fit: cover;"
+             onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400?text=Trivora+Learning';">
+    {% else %}
+        <img src="https://via.placeholder.com/600x400?text=Trivora+Growth" 
+             class="card-img-top" 
+             alt="Default Trivora Image" 
+             style="height: 230px; object-fit: cover;">
+    {% endif %}
+    
+    <span class="position-absolute top-0 start-0 m-3 badge rounded-pill bg-light text-dark shadow-sm px-3 py-2" style="font-size: 0.7rem; font-weight: 700;">
+        {{ category_name }}
+    </span>
+</div>
+              
                 <div class="card-body p-4">
                     <h3 class="fw-bold mb-3" style="color: #2d3436; font-size: 1.3rem; line-height: 1.4;">{{ post.title }}</h3>
                     <p class="text-secondary mb-4" style="font-size: 0.9rem; line-height: 1.6;">
@@ -79,3 +72,4 @@
     }
 </style>
 {% endblock %}
+
