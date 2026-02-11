@@ -203,58 +203,60 @@ def edit_post(post_id):
         return redirect(url_for('post_detail', post_id=post.id))
     return render_template('edit_post.html', post=post)
     
+# --- IS CODE KO SITEMAP ROUTE SE REPLACE KAREIN ---
+
 @app.route('/sitemap.xml')
 def sitemap():
-    pages = []
-    # Home page link
-    pages.append(["https://trivora-blog.vercel.app/", datetime.now().strftime('%Y-%m-%d')])
+    try:
+        pages = []
+        today = datetime.now().strftime('%Y-%m-%d')
+        
+        # 1. Home Page
+        pages.append(["https://trivora-blog.vercel.app/", today])
 
-    # 1. Contact Us page manual add karein
-    pages.append([url_for('contact', _external=True), datetime.now().strftime('%Y-%m-%d')])
+        # 2. Static Pages (Sahi function names: 'contact' aur 'privacy')
+        try:
+            pages.append([url_for('contact', _external=True), today])
+            pages.append([url_for('privacy', _external=True), today])
+        except Exception as e:
+            print(f"Sitemap URL Error: {e}")
 
-    # 2. Privacy Policy page manual add karein
-    pages.append([url_for('privacy', _external=True), datetime.now().strftime('%Y-%m-%d')])
+        # 3. Blog Posts
+        posts = Post.query.all()
+        for post in posts:
+            url = url_for('post_detail', post_id=post.id, _external=True)
+            pages.append([url, post.date_posted.strftime('%Y-%m-%d')])
 
-    # Har blog post ka link automatic jodein (jaisa pehle tha)
-    posts = Post.query.all()
-    for post in posts:
-        url = url_for('post_detail', post_id=post.id, _external=True)
-        pages.append([url, post.date_posted.strftime('%Y-%m-%d')])
+        sitemap_xml = render_template('sitemap_template.xml', pages=pages)
+        response = make_response(sitemap_xml)
+        response.headers["Content-Type"] = "application/xml"
+        return response
+    except Exception as e:
+        return f"Sitemap Error: {str(e)}", 500
 
-    sitemap_xml = render_template('sitemap_template.xml', pages=pages)
-    response = make_response(sitemap_xml)
-    response.headers["Content-Type"] = "application/xml"
-    return response
-    
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
 
-@app.route('/privacy')
+@app.route('/privacy-policy')
 def privacy():
     return render_template('privacy.html')
 
-# Ye route batayega ki aapki key kya hai
-@app.route('/e35d5ba6bea14a9581ce9e6f6b6c5c87.txt')  # Yahan apni file ka exact naam likhein
+# Bing Verification Route (Ownership verify karne ke liye)
+@app.route('/BingSiteAuth.xml')
+def bing_verification():
+    xml_content = """<?xml version="1.0"?>
+<users>
+	<user>22E7992CD9596D000A5152BB886B7605</user>
+</users>"""
+    response = make_response(xml_content)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
+# IndexNow Key Route
+@app.route('/e35d5ba6bea14a9581ce9e6f6b6c5c87.txt')
 def index_now_key():
-    # Return mein wahi key likhein jo file ke andar hai
     return "e35d5ba6bea14a9581ce9e6f6b6c5c87"
-    
+
 if __name__ == '__main__':
     app.run()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
