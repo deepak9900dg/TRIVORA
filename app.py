@@ -242,16 +242,6 @@ def contact():
 def privacy():
     return render_template('privacy.html')
 
-# Bing Verification Route (Ownership verify karne ke liye)
-@app.route('/BingSiteAuth.xml')
-def bing_verification():
-    xml_content = """<?xml version="1.0"?>
-<users>
-	<user>22E7992CD9596D000A5152BB886B7605</user>
-</users>"""
-    response = make_response(xml_content)
-    response.headers["Content-Type"] = "application/xml"
-    return response
 
 # IndexNow Key Route
 @app.route('/e35d5ba6bea14a9581ce9e6f6b6c5c87.txt')
@@ -260,4 +250,5 @@ def index_now_key():
 
 if __name__ == '__main__':
     app.run()
+
 
