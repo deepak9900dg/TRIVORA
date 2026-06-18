@@ -1,7 +1,6 @@
 import os
 from flask import Flask, render_template, request, jsonify, redirect, session, url_for, make_response
 from werkzeug.utils import secure_filename
-from moviepy.editor import VideoFileClip  # For high-end free processing
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 import os
