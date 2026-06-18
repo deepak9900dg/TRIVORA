@@ -6,9 +6,10 @@
     <title>Trivora | AI Video Studio</title>
     <style>
         :root {
-            --bg-deep: #060606;
-            --panel-dark: #0F0F12;
-            --neon-glow: #8B5CF6; /* Premium Violet Glow */
+            --bg-deep: #0A0A0C;
+            --panel-dark: #121216;
+            --neon-glow: #8B5CF6; 
+            --matrix-green: #10B981;
             --text-main: #F3F4F6;
             --text-dim: #9CA3AF;
         }
@@ -19,10 +20,8 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
         }
 
-        /* Command Center Layout */
         .studio-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -31,25 +30,22 @@
 
         header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 20px;
         }
 
         header h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 800;
             letter-spacing: -0.05em;
-            margin-bottom: 10px;
+            margin: 0 0 10px 0;
             background: linear-gradient(to right, #F3F4F6, #8B5CF6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        header p {
-            color: var(--text-dim);
-            font-size: 1.1rem;
-        }
-
-        /* Grid for Tools Layout */
+        /* Tools Hub Layout */
         .workspace-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -60,39 +56,254 @@
             .workspace-grid { grid-template-columns: 1fr; }
         }
 
-        /* Glassmorphic Panel Design */
         .panel {
             background: var(--panel-dark);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 16px;
             padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            transition: border-color 0.3s ease;
-        }
-
-        .panel:hover {
-            border-color: rgba(139, 92, 246, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
         }
 
         .panel-title {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 600;
             margin-bottom: 20px;
+            color: #FFF;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        /* Upload Drop Zone */
+        /* Advanced File Upload Component */
         .drop-zone {
-            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(139, 92, 246, 0.3);
             border-radius: 12px;
-            padding: 40px 20px;
+            padding: 50px 20px;
             text-align: center;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(139, 92, 246, 0.02);
             transition: all 0.3s ease;
         }
 
         .drop-zone:hover {
-            background: rgba(139, 92,
+            border-color: var(--neon-glow);
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        /* Feature Selection Buttons */
+        .tool-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .tool-card {
+            background: #18181F;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .tool-card.active {
+            border-color: var(--neon-glow);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .tool-card h3 {
+            margin: 0 0 5px 0;
+            font-size: 1rem;
+            color: #FFF;
+        }
+
+        .tool-card p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        /* Sliders */
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+
+        .slider {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--neon-glow);
+            cursor: pointer;
+        }
+
+        .btn-action {
+            width: 100%;
+            background: var(--neon-glow);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Cyberpunk Real-time Monitoring Console */
+        .console-box {
+            background: #050507;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            color: var(--matrix-green);
+            height: 250px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="studio-container">
+        <header>
+            <h1>TRIVORA AI VIDEO STUDIO</h1>
+            <p style="color: var(--text-dim); margin: 0;">Autonomous Neural Video Editing Command Center</p>
+        </header>
+
+        <div class="workspace-grid">
+            
+            <div class="panel">
+                <div class="panel-title">⚙️ Media Injection Node</div>
+                
+                <div class="drop-zone" id="dropZone">
+                    <p style="margin: 0; font-size: 1.1rem; font-weight: 500;">Select or Drop Raw Video</p>
+                    <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: var(--text-dim);">MP4, MOV | Automated Proxy Processing</p>
+                    <input type="file" id="videoInput" style="display: none;" accept="video/*">
+                </div>
+
+                <div class="tool-selector">
+                    <div class="tool-card active" onclick="selectTool('90s')">
+                        <h3>🎬 Retro 90s Engine</h3>
+                        <p>Apply cinematic analog grains & warm color grade.</p>
+                    </div>
+                    <div class="tool-card" onclick="selectTool('audio')">
+                        <h3>🎵 Voice Isolation</h3>
+                        <p>Extract high-fidelity clean vocal frequency channels.</p>
+                    </div>
+                </div>
+
+                <div id="sliderControls">
+                    <div class="control-group">
+                        <label class="control-label">Aesthetic Grain Density</label>
+                        <input type="range" class="slider" min="0" max="100" value="45">
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Chroma Color Grading (Warmth)</label>
+                        <input type="range" class="slider" min="0" max="100" value="70">
+                    </div>
+                </div>
+
+                <button class="btn-action" id="processBtn">Render Neural Frame Sequence</button>
+            </div>
+
+            <div class="panel" style="display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div class="panel-title">🖥️ Computational Core Output</div>
+                    <div class="console-box" id="consoleLogs">
+                        [System Initialization]: Active.<br>
+                        [Pipeline Status]: Standing by. Awaiting raw file stream ingestion...
+                    </div>
+                </div>
+
+                <div id="resultOutput" style="margin-top: 20px; display: none; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 20px;">
+                    <p style="color: var(--matrix-green); font-weight: 600; margin: 0 0 10px 0;">✓ Compilation Successful</p>
+                    <audio id="audioPlayer" controls style="width: 100%; display: none;"></audio>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let currentTool = '90s';
+        const dropZone = document.getElementById('dropZone');
+        const videoInput = document.getElementById('videoInput');
+        const consoleLogs = document.getElementById('consoleLogs');
+        const processBtn = document.getElementById('processBtn');
+        const sliderControls = document.getElementById('sliderControls');
+
+        dropZone.addEventListener('click', () => videoInput.click());
+
+        videoInput.addEventListener('change', () => {
+            if(videoInput.files.length > 0) {
+                consoleLogs.innerHTML += `<br>[Ingestion]: File "${videoInput.files[0].name}" successfully parsed into active video buffer memory.`;
+            }
+        });
+
+        function selectTool(toolType) {
+            currentTool = toolType;
+            document.querySelectorAll('.tool-card').forEach(card => card.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            if(toolType === 'audio') {
+                sliderControls.style.opacity = '0.3';
+                consoleLogs.innerHTML += `<br>[Mode Switched]: Engine set to Vocal/Audio Isolation Matrix.`;
+            } else {
+                sliderControls.style.opacity = '1';
+                consoleLogs.innerHTML += `<br>[Mode Switched]: Engine set to Retro 90s Cinematic Frame Node.`;
+            }
+        }
+
+        processBtn.addEventListener('click', async () => {
+            if(videoInput.files.length === 0) {
+                alert('Please upload a video file stream first.');
+                return;
+            }
+            
+            consoleLogs.innerHTML += `<br>[Execution]: Compiling video assets. Initializing sub-routine processing...`;
+            
+            if(currentTool === 'audio') {
+                const formData = new FormData();
+                formData.append('video', videoInput.files[0]);
+                try {
+                    const response = await fetch('/api/extract-audio', { method: 'POST', body: formData });
+                    const data = await response.json();
+                    if(data.success) {
+                        consoleLogs.innerHTML += `<br>[Success]: Vocal tracks successfully mapped. Output generated below.`;
+                        document.getElementById('audioPlayer').src = data.audio_url;
+                        document.getElementById('audioPlayer').style.display = 'block';
+                        document.getElementById('resultOutput').style.display = 'block';
+                    }
+                } catch(e) {
+                    consoleLogs.innerHTML += `<br>[Fatal Error]: Pipeline collapsed during processing.`;
+                }
+            } else {
+                // Mock simulation logic for visual tools preview
+                setTimeout(() => { consoleLogs.innerHTML += `<br>[Analyzing]: Executing pixel-by-pixel aesthetic tracking...`; }, 1000);
+                setTimeout(() => { consoleLogs.innerHTML += `<br>[Rendering]: Injecting analog noise matrix & 90s warm chroma profile...`; }, 2500);
+                setTimeout(() => { consoleLogs.innerHTML += `<br>[Success]: Framework compiled successfully. Render layout complete.`; }, 4000);
+            }
+        });
+    </script>
+</body>
+</html>
