@@ -1,20 +1,21 @@
 import os
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, session, url_for, make_response
 from werkzeug.utils import secure_filename
-from moviepy.editor import VideoFileClip  # Yeh line video se audio nikalegi
-from flask import Flask, render_template, request, redirect, session, url_for, make_response
+from moviepy.editor import VideoFileClip  # For high-end free processing
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import cloudinary
 import cloudinary.uploader
 import requests
+import re
+from markupsafe import Markup
 
 def send_to_indexnow(new_post_url):
     url = "https://www.bing.com/indexnow"
     params = {
         "url": new_post_url,
-        "key": "e35d5ba6bea14a9581ce9e6f6b6c5c87" # Aapki download ki hui key
+        "key": "e35d5ba6bea14a9581ce9e6f6b6c5c87"
     }
     try:
         response = requests.get(url, params=params)
@@ -25,29 +26,21 @@ def send_to_indexnow(new_post_url):
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads'
-os.makedirs(UPLOAD_FOLDER, exist_ok=True) # Agar folder nahi hoga, toh yeh apne aap bana dega
-from datetime import timedelta
-import re  # <-- Ye import hona zaroori hai
-from markupsafe import Markup
-app.secret_key = os.environ.get('SECRET_KEY')
-app.permanent_session_lifetime = timedelta(days=3650) # 30 din tak login rahega
-# Vercel Settings se Secret Key uthayega, nahi toh default use karega
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+app.secret_key = os.environ.get('SECRET_KEY') or "super-secret-trivora-key"
+app.permanent_session_lifetime = timedelta(days=3650)
+
 def make_clickable(text):
-    # Link dhoondne ka pattern
     url_pattern = re.compile(r'(https?://[^\s]+)')
-    
-    # Link ko <a> tag mein badalna (target="_blank" ke saath)
     clickable_text = url_pattern.sub(
         r'<a href="\1" target="_blank" style="color: #e9967a; text-decoration: underline;">\1</a>', 
         text
     )
     return Markup(clickable_text)
 
-# 2. Is function ko Flask/Jinja mein register karna
 app.jinja_env.filters['make_clickable'] = make_clickable
-app.secret_key = os.environ.get('SECRET_KEY') or "super-secret-trivora-key"
 
-# File size limit 16MB
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp'}
 
@@ -61,22 +54,17 @@ cloudinary.config(
     api_secret = os.environ.get('CLOUDINARY_API_SECRET')
 )
 
-# --- DATABASE CONFIGURATION (Neon Postgres) ---
-# Aapke variables 'POSTGRES_URL' aur 'DATABASE_URL' dono check honge
+# --- DATABASE CONFIGURATION ---
 database_url = os.environ.get('POSTGRES_URL') or os.environ.get('DATABASE_URL')
-
 if database_url:
-    # Postgres format fix for SQLAlchemy
     if database_url.startswith("postgres://"):
         database_url = database_url.replace("postgres://", "postgresql://", 1)
 else:
-    # Fail-safe: Local SQLite for testing
     database_url = 'sqlite:///' + os.path.join('/tmp', 'trivora.db')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Database object initialization (Sabse zaroori line)
 db = SQLAlchemy(app)
 
 # --- MODELS ---
@@ -95,7 +83,6 @@ class Post(db.Model):
     author = db.Column(db.String(50), nullable=False)
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
 
-# Tables automatically ban jayenge Neon database mein
 with app.app_context():
     db.create_all()
 
@@ -108,6 +95,18 @@ def home():
         return render_template('home.html', posts=posts)
     except Exception as e:
         return f"Database Error: {str(e)}"
+
+# BYPASS MASTER: Agar koi direct purane ya naye link par aaye, use seedhe tools dikhne chahiye
+@app.route('/category/Psychology')
+@app.route('/studio')
+@app.route('/video-studio')
+def video_studio():
+    return render_template('video_studio.html')
+
+@app.route('/category/<name>')
+def category(name):
+    posts = Post.query.filter_by(category=name).order_by(Post.date_posted.asc()).all()
+    return render_template('category.html', category_name=name, posts=posts)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -142,11 +141,6 @@ def logout():
     session.pop('user', None)
     return redirect(url_for('home'))
 
-@app.route('/category/<name>')
-def category(name):
-    posts = Post.query.filter_by(category=name).order_by(Post.date_posted.asc()).all()
-    return render_template('category.html', category_name=name, posts=posts)
-
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if 'user' not in session:
@@ -167,7 +161,6 @@ def upload():
         db.session.commit()
         post_url = f"https://trivora-blog.vercel.app/post/{new_post.id}" 
         
-        # IndexNow function ko call karein
         try:
             send_to_indexnow(post_url)
         except:
@@ -208,26 +201,20 @@ def edit_post(post_id):
         db.session.commit()
         return redirect(url_for('post_detail', post_id=post.id))
     return render_template('edit_post.html', post=post)
-    
-
 
 @app.route('/sitemap.xml')
 def sitemap():
     try:
         pages = []
         today = datetime.now().strftime('%Y-%m-%d')
-        
-        # 1. Home Page
         pages.append(["https://trivora-blog.vercel.app/", today])
 
-        # 2. Static Pages (Sahi function names: 'contact' aur 'privacy')
         try:
             pages.append([url_for('contact', _external=True), today])
             pages.append([url_for('privacy', _external=True), today])
         except Exception as e:
             print(f"Sitemap URL Error: {e}")
 
-        # 3. Blog Posts
         posts = Post.query.all()
         for post in posts:
             url = url_for('post_detail', post_id=post.id, _external=True)
@@ -248,17 +235,11 @@ def contact():
 def privacy():
     return render_template('privacy.html')
 
-
-# IndexNow Key Route
 @app.route('/e35d5ba6bea14a9581ce9e6f6b6c5c87.txt')
 def index_now_key():
     return "e35d5ba6bea14a9581ce9e6f6b6c5c87"
-# --- 1. Jab koi AI Video Studio kholega, toh use naya page dikhane ke liye ---
-@app.route('/video-studio')
-def video_studio():
-    return render_template('video_studio.html')
 
-# --- 2. Backend ka asli engine jo video se audio alag karega ---
+# --- Backend Core: Audio Extraction Engine ---
 @app.route('/api/extract-audio', methods=['POST'])
 def extract_audio():
     if 'video' not in request.files:
@@ -268,22 +249,18 @@ def extract_audio():
     if file.filename == '':
         return jsonify({'error': 'No file selected'}), 400
         
-    # File ka naam safe karke use static/uploads folder mein save karna
     filename = secure_filename(file.filename)
     video_path = os.path.join(UPLOAD_FOLDER, filename)
     file.save(video_path)
     
     try:
-        # Video ko read karna
         clip = VideoFileClip(video_path)
         audio_filename = f"{os.path.splitext(filename)[0]}.mp3"
         audio_path = os.path.join(UPLOAD_FOLDER, audio_filename)
         
-        # Audio ko nikal kar save karna
         clip.audio.write_audiofile(audio_path, logger=None)
         clip.close()
         
-        # Front-end ko link bhejna ki kaam ho gaya hai
         return jsonify({
             'success': True,
             'audio_url': f"/static/uploads/{audio_filename}"
@@ -293,5 +270,3 @@ def extract_audio():
 
 if __name__ == '__main__':
     app.run()
-
-
