@@ -6,4 +6,4 @@ gunicorn
 psycopg2-binary
 bleach
 requests
-moviepy==1.0.3
+
