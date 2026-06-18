@@ -24,6 +24,8 @@ def send_to_indexnow(new_post_url):
         print(f"Error sending to IndexNow: {e}")
 
 app = Flask(__name__)
+UPLOAD_FOLDER = 'static/uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True) # Agar folder nahi hoga, toh yeh apne aap bana dega
 from datetime import timedelta
 import re  # <-- Ye import hona zaroori hai
 from markupsafe import Markup
@@ -251,6 +253,43 @@ def privacy():
 @app.route('/e35d5ba6bea14a9581ce9e6f6b6c5c87.txt')
 def index_now_key():
     return "e35d5ba6bea14a9581ce9e6f6b6c5c87"
+# --- 1. Jab koi AI Video Studio kholega, toh use naya page dikhane ke liye ---
+@app.route('/video-studio')
+def video_studio():
+    return render_template('video_studio.html')
+
+# --- 2. Backend ka asli engine jo video se audio alag karega ---
+@app.route('/api/extract-audio', methods=['POST'])
+def extract_audio():
+    if 'video' not in request.files:
+        return jsonify({'error': 'No video provided'}), 400
+        
+    file = request.files['video']
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+        
+    # File ka naam safe karke use static/uploads folder mein save karna
+    filename = secure_filename(file.filename)
+    video_path = os.path.join(UPLOAD_FOLDER, filename)
+    file.save(video_path)
+    
+    try:
+        # Video ko read karna
+        clip = VideoFileClip(video_path)
+        audio_filename = f"{os.path.splitext(filename)[0]}.mp3"
+        audio_path = os.path.join(UPLOAD_FOLDER, audio_filename)
+        
+        # Audio ko nikal kar save karna
+        clip.audio.write_audiofile(audio_path, logger=None)
+        clip.close()
+        
+        # Front-end ko link bhejna ki kaam ho gaya hai
+        return jsonify({
+            'success': True,
+            'audio_url': f"/static/uploads/{audio_filename}"
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run()
