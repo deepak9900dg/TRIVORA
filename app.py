@@ -1,3 +1,7 @@
+import os
+from flask import Flask, render_template, request, jsonify
+from werkzeug.utils import secure_filename
+from moviepy.editor import VideoFileClip  # Yeh line video se audio nikalegi
 from flask import Flask, render_template, request, redirect, session, url_for, make_response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
