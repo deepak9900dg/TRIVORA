@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, jsonify, redirect, session, u
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
-import os
 import cloudinary
 import cloudinary.uploader
 import requests
@@ -95,8 +94,7 @@ def home():
     except Exception as e:
         return f"Database Error: {str(e)}"
 
-# BYPASS MASTER: Agar koi direct purane ya naye link par aaye, use seedhe tools dikhne chahiye
-@app.route('/category/Psychology')
+# BYPASS MASTER: Direct studio page ka route
 @app.route('/studio')
 @app.route('/video-studio')
 def video_studio():
@@ -104,6 +102,10 @@ def video_studio():
 
 @app.route('/category/<name>')
 def category(name):
+    # MASTER FIX: Agar category 'psychology' khule (chahe Capital ho ya Small), direct Studio render hoga
+    if name.lower() == 'psychology':
+        return render_template('video_studio.html')
+        
     posts = Post.query.filter_by(category=name).order_by(Post.date_posted.asc()).all()
     return render_template('category.html', category_name=name, posts=posts)
 
@@ -238,34 +240,11 @@ def privacy():
 def index_now_key():
     return "e35d5ba6bea14a9581ce9e6f6b6c5c87"
 
-# --- Backend Core: Audio Extraction Engine ---
+# --- Safe Vercel Processing Endpoint ---
 @app.route('/api/extract-audio', methods=['POST'])
 def extract_audio():
-    if 'video' not in request.files:
-        return jsonify({'error': 'No video provided'}), 400
-        
-    file = request.files['video']
-    if file.filename == '':
-        return jsonify({'error': 'No file selected'}), 400
-        
-    filename = secure_filename(file.filename)
-    video_path = os.path.join(UPLOAD_FOLDER, filename)
-    file.save(video_path)
-    
-    try:
-        clip = VideoFileClip(video_path)
-        audio_filename = f"{os.path.splitext(filename)[0]}.mp3"
-        audio_path = os.path.join(UPLOAD_FOLDER, audio_filename)
-        
-        clip.audio.write_audiofile(audio_path, logger=None)
-        clip.close()
-        
-        return jsonify({
-            'success': True,
-            'audio_url': f"/static/uploads/{audio_filename}"
-        })
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    # Vercel bypass placeholder for frontend tools
+    return jsonify({'success': True, 'message': 'Client-side processing active'})
 
 if __name__ == '__main__':
     app.run()
